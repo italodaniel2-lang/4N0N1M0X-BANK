@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>HACKER DATABASE v1.0</title>
+    <title>HACKER DATABASE v3.0 - COM EXPORT/IMPORT</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
         
@@ -22,15 +22,13 @@
             align-items: center;
             padding: 20px;
             position: relative;
-            overflow-x: hidden;
+            overflow-x: auto;
         }
 
-        /* Tudo que for texto e símbolos fica verde */
         body, body * {
             color: #00ff00 !important;
         }
 
-        /* Efeito de scanline */
         body::before {
             content: "";
             position: fixed;
@@ -49,33 +47,28 @@
             z-index: 999;
         }
 
-        /* Efeito de glow nas bordas */
         .app-container {
             width: 100%;
-            max-width: 700px;
+            max-width: 750px;
             background: #000000;
             border: 2px solid #00ff00;
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.05);
             overflow: hidden;
             padding: 20px 24px 28px;
-            transition: all 0.2s ease;
             position: relative;
         }
 
-        /* ASCII Art Header */
         .ascii-header {
             text-align: center;
             margin-bottom: 20px;
-            font-size: 10px;
+            font-size: 9px;
             line-height: 1.2;
             white-space: pre;
             font-family: monospace;
-            letter-spacing: 0;
             text-shadow: 0 0 5px #00ff00;
         }
         
-        /* Estilo normal para o nome do usuário */
         .user-name {
             text-align: center;
             margin: 10px 0 20px 0;
@@ -87,10 +80,6 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             text-shadow: 0 0 8px #00ff00;
-        }
-
-        h1, h2, h3, h4, h5, h6, p, span, div, label, small, strong, b, i, em {
-            color: #00ff00 !important;
         }
 
         h2 {
@@ -114,6 +103,16 @@
             box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.1), 0 2px 5px rgba(0,0,0,0.5);
         }
 
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .button-group button {
+            flex: 1;
+            min-width: 120px;
+        }
+
         input, button {
             width: 100%;
             padding: 12px 14px;
@@ -122,33 +121,25 @@
             border-radius: 4px;
             font-size: 0.9rem;
             font-family: 'Share Tech Mono', monospace;
-            font-weight: normal;
-            transition: all 0.2s;
             background: #000000;
         }
 
         input {
-            background: #000000;
-            color: #00ff00 !important;
-            outline: none;
             border: 1px solid #00ff00;
         }
         input:focus {
             border-color: #00ff00;
             background: #000000;
             box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
-            color: #00ff00 !important;
+            outline: none;
         }
         input::placeholder {
             color: #006600 !important;
         }
 
         button {
-            background: #000000;
-            color: #00ff00 !important;
             border: 1px solid #00ff00;
             cursor: pointer;
-            margin-top: 15px;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -164,52 +155,31 @@
         }
 
         .btn-secondary {
-            background: #000000;
             border-color: #006600;
         }
         .btn-secondary:hover {
             background: #006600;
-            color: #000000 !important;
         }
         .btn-danger {
-            background: #000000;
             border-color: #ff0000;
         }
         .btn-danger:hover {
             background: #ff0000;
-            color: #000000 !important;
-            border-color: #ff0000;
         }
         .btn-success {
-            background: #000000;
             border-color: #00ff00;
         }
         .btn-success:hover {
             background: #00ff00;
-            color: #000000 !important;
         }
         .btn-warning {
-            background: #000000;
             border-color: #ffff00;
         }
         .btn-warning:hover {
             background: #ffff00;
-            color: #000000 !important;
         }
 
-        .error-msg {
-            color: #00ff00 !important;
-            background: #000000;
-            border: 1px solid #00ff00;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .success-msg {
-            color: #00ff00 !important;
+        .error-msg, .success-msg {
             background: #000000;
             border: 1px solid #00ff00;
             padding: 8px 12px;
@@ -250,7 +220,6 @@
             box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
         }
         .data-row strong {
-            color: #00ff00 !important;
             font-weight: bold;
         }
 
@@ -269,11 +238,9 @@
         hr {
             margin: 15px 0;
             border-color: #00ff00;
-            border-style: solid;
         }
 
         label {
-            color: #00ff00 !important;
             display: block;
             margin-top: 10px;
             font-size: 0.75rem;
@@ -281,7 +248,6 @@
         }
 
         small {
-            color: #00ff00 !important;
             font-size: 0.65rem;
             display: block;
             margin-top: 8px;
@@ -293,7 +259,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: #000000;
+            background: rgba(0,0,0,0.95);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -305,18 +271,10 @@
             border: 2px solid #00ff00;
             border-radius: 8px;
             padding: 20px;
-            max-width: 450px;
+            max-width: 500px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
-        }
-        .modal-content h3 {
-            color: #00ff00 !important;
-            margin-bottom: 15px;
-        }
-        .modal-content p, .modal-content label, .modal-content input {
-            color: #00ff00 !important;
         }
 
         ::selection {
@@ -329,155 +287,244 @@
 <div class="app-container" id="appRoot"></div>
 
 <script>
-    // ==================== BANCO DE DADOS ====================
+    // ==================== BANCO DE DADOS POR USUARIO ====================
     function initDB() {
-        if (!localStorage.getItem("app_users")) {
-            localStorage.setItem("app_users", JSON.stringify([]));
-        }
-        if (!localStorage.getItem("database_records")) {
-            localStorage.setItem("database_records", JSON.stringify([]));
-        }
-        if (!localStorage.getItem("record_passwords")) {
-            localStorage.setItem("record_passwords", JSON.stringify({}));
+        if (!localStorage.getItem("db_usuarios")) {
+            localStorage.setItem("db_usuarios", JSON.stringify([]));
         }
     }
-
-    function getUsers() {
-        return JSON.parse(localStorage.getItem("app_users"));
+    
+    function getUsuarios() {
+        return JSON.parse(localStorage.getItem("db_usuarios"));
     }
-    function saveUsers(users) {
-        localStorage.setItem("app_users", JSON.stringify(users));
-    }
-
-    function getDatabaseRecords() {
-        return JSON.parse(localStorage.getItem("database_records"));
-    }
-    function saveDatabaseRecords(records) {
-        localStorage.setItem("database_records", JSON.stringify(records));
-    }
-
-    function getRecordPasswords() {
-        return JSON.parse(localStorage.getItem("record_passwords"));
-    }
-    function saveRecordPasswords(passwords) {
-        localStorage.setItem("record_passwords", JSON.stringify(passwords));
-    }
-
-    function isValidPassword(pwd) {
-        const hasUpper = /[A-Z]/.test(pwd);
-        const hasNumber = /[0-9]/.test(pwd);
-        const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd);
-        return hasUpper && hasNumber && hasSpecial;
-    }
-
-    function hashPassword(pwd) {
-        return btoa(pwd + "dataAppSalt2025");
-    }
-
-    function verifyPassword(plain, storedHash) {
-        return hashPassword(plain) === storedHash;
-    }
-
-    function registerAccount(nome, senha) {
-        let users = getUsers();
-        if (users.find(u => u.nome.toLowerCase() === nome.toLowerCase())) {
-            return { success: false, message: "[ERRO] USUARIO JA EXISTE" };
-        }
-        if (!isValidPassword(senha)) {
-            return { success: false, message: "[ERRO] SENHA DEVE CONTER: MAIUSCULA, NUMERO E CARACTERE ESPECIAL" };
-        }
-        users.push({ nome: nome, senhaHash: hashPassword(senha) });
-        saveUsers(users);
-        return { success: true, message: "[OK] CONTA CRIADA COM SUCESSO" };
-    }
-
-    function loginAccount(nome, senha) {
-        let users = getUsers();
-        const user = users.find(u => u.nome.toLowerCase() === nome.toLowerCase());
-        if (!user) return { success: false, message: "[ERRO] USUARIO NAO ENCONTRADO" };
-        if (!verifyPassword(senha, user.senhaHash)) return { success: false, message: "[ERRO] SENHA INCORRETA" };
-        return { success: true, message: "[OK] ACESSO PERMITIDO", user: user };
-    }
-
-    function resetPassword(username, newPassword, confirmPassword) {
-        if (newPassword !== confirmPassword) {
-            return { success: false, message: "[ERRO] AS SENHAS NAO COINCIDEM" };
-        }
-        if (!isValidPassword(newPassword)) {
-            return { success: false, message: "[ERRO] SENHA DEVE CONTER: MAIUSCULA, NUMERO E CARACTERE ESPECIAL" };
-        }
-        let users = getUsers();
-        const userIndex = users.findIndex(u => u.nome === username);
-        if (userIndex === -1) return { success: false, message: "[ERRO] USUARIO NAO ENCONTRADO" };
+    
+    function addUsuario(nome) {
+        let usuarios = getUsuarios();
+        if (usuarios.includes(nome)) return false;
+        usuarios.push(nome);
+        localStorage.setItem("db_usuarios", JSON.stringify(usuarios));
         
-        users[userIndex].senhaHash = hashPassword(newPassword);
-        saveUsers(users);
-        return { success: true, message: "[OK] SENHA REDEFINIDA COM SUCESSO" };
-    }
-
-    function changeAccountPassword(username, oldPassword, newPassword) {
-        let users = getUsers();
-        const userIndex = users.findIndex(u => u.nome === username);
-        if (userIndex === -1) return { success: false, message: "[ERRO] USUARIO NAO ENCONTRADO" };
-        
-        if (!verifyPassword(oldPassword, users[userIndex].senhaHash)) {
-            return { success: false, message: "[ERRO] SENHA ANTIGA INCORRETA" };
+        if (!localStorage.getItem(`db_records_${nome}`)) {
+            localStorage.setItem(`db_records_${nome}`, JSON.stringify([]));
         }
-        if (!isValidPassword(newPassword)) {
-            return { success: false, message: "[ERRO] NOVA SENHA INVALIDA" };
+        if (!localStorage.getItem(`db_passwords_${nome}`)) {
+            localStorage.setItem(`db_passwords_${nome}`, JSON.stringify({}));
         }
-        
-        users[userIndex].senhaHash = hashPassword(newPassword);
-        saveUsers(users);
-        return { success: true, message: "[OK] SENHA ALTERADA COM SUCESSO" };
+        return true;
     }
-
-    function addDatabaseRecord(record) {
-        let records = getDatabaseRecords();
+    
+    function usuarioExiste(nome) {
+        return getUsuarios().includes(nome);
+    }
+    
+    function getDatabaseRecords(usuario) {
+        return JSON.parse(localStorage.getItem(`db_records_${usuario}`) || "[]");
+    }
+    
+    function saveDatabaseRecords(usuario, records) {
+        localStorage.setItem(`db_records_${usuario}`, JSON.stringify(records));
+    }
+    
+    function getRecordPasswords(usuario) {
+        return JSON.parse(localStorage.getItem(`db_passwords_${usuario}`) || "{}");
+    }
+    
+    function saveRecordPasswords(usuario, passwords) {
+        localStorage.setItem(`db_passwords_${usuario}`, JSON.stringify(passwords));
+    }
+    
+    function setRecordPassword(usuario, recordName, password) {
+        const passwords = getRecordPasswords(usuario);
+        passwords[recordName] = password;
+        saveRecordPasswords(usuario, passwords);
+    }
+    
+    function verifyRecordPassword(usuario, recordName, password) {
+        const passwords = getRecordPasswords(usuario);
+        return passwords[recordName] === password;
+    }
+    
+    function hasRecordPassword(usuario, recordName) {
+        const passwords = getRecordPasswords(usuario);
+        return !!passwords[recordName];
+    }
+    
+    function addDatabaseRecord(usuario, record) {
+        let records = getDatabaseRecords(usuario);
         if (records.find(r => r.nomeCompleto.toLowerCase() === record.nomeCompleto.toLowerCase())) {
             return { success: false, message: "[ERRO] REGISTRO JA EXISTE" };
         }
         records.push(record);
-        saveDatabaseRecords(records);
+        saveDatabaseRecords(usuario, records);
         return { success: true, message: "[OK] REGISTRO ADICIONADO" };
     }
-
-    function updateDatabaseRecord(nomeOriginal, novosDados) {
-        let records = getDatabaseRecords();
+    
+    function updateDatabaseRecord(usuario, nomeOriginal, novosDados) {
+        let records = getDatabaseRecords(usuario);
         const index = records.findIndex(r => r.nomeCompleto === nomeOriginal);
         if (index !== -1) {
+            const oldName = records[index].nomeCompleto;
+            const newName = novosDados.nomeCompleto;
+            
+            if (oldName !== newName) {
+                const passwords = getRecordPasswords(usuario);
+                if (passwords[oldName]) {
+                    passwords[newName] = passwords[oldName];
+                    delete passwords[oldName];
+                    saveRecordPasswords(usuario, passwords);
+                }
+            }
             records[index] = { ...records[index], ...novosDados };
-            saveDatabaseRecords(records);
+            saveDatabaseRecords(usuario, records);
             return true;
         }
         return false;
     }
-
-    function setRecordPassword(loginName, recordName, password) {
-        const passwords = getRecordPasswords();
-        const key = `${loginName}_${recordName}`;
-        passwords[key] = password;
-        saveRecordPasswords(passwords);
+    
+    function deleteDatabaseRecord(usuario, recordName) {
+        let records = getDatabaseRecords(usuario);
+        const newRecords = records.filter(r => r.nomeCompleto !== recordName);
+        if (newRecords.length === records.length) return false;
+        saveDatabaseRecords(usuario, newRecords);
+        
+        const passwords = getRecordPasswords(usuario);
+        if (passwords[recordName]) {
+            delete passwords[recordName];
+            saveRecordPasswords(usuario, passwords);
+        }
+        return true;
     }
-
-    function verifyRecordPassword(loginName, recordName, password) {
-        const passwords = getRecordPasswords();
-        const key = `${loginName}_${recordName}`;
-        return passwords[key] === password;
+    
+    // ==================== FUNCOES DE FORMATACAO ====================
+    function formatarCPF(valor) {
+        valor = valor.replace(/\D/g, '');
+        if (valor.length <= 3) return valor;
+        if (valor.length <= 6) return valor.replace(/(\d{3})(\d+)/, '$1.$2');
+        if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+        return valor.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, '$1.$2.$3-$4').substring(0, 14);
     }
-
-    function hasRecordPassword(loginName, recordName) {
-        const passwords = getRecordPasswords();
-        const key = `${loginName}_${recordName}`;
-        return !!passwords[key];
+    
+    function formatarCNPJ(valor) {
+        valor = valor.replace(/\D/g, '');
+        if (valor.length <= 2) return valor;
+        if (valor.length <= 5) return valor.replace(/(\d{2})(\d+)/, '$1.$2');
+        if (valor.length <= 8) return valor.replace(/(\d{2})(\d{3})(\d+)/, '$1.$2.$3');
+        if (valor.length <= 12) return valor.replace(/(\d{2})(\d{3})(\d{3})(\d+)/, '$1.$2.$3/$4');
+        return valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d+)/, '$1.$2.$3/$4-$5').substring(0, 18);
     }
-
+    
+    function formatarCEP(valor) {
+        valor = valor.replace(/\D/g, '');
+        if (valor.length <= 5) return valor;
+        return valor.replace(/(\d{5})(\d+)/, '$1-$2').substring(0, 9);
+    }
+    
+    function formatarTelefone(valor) {
+        valor = valor.replace(/\D/g, '');
+        if (valor.length <= 2) return valor;
+        if (valor.length <= 6) return valor.replace(/(\d{2})(\d+)/, '($1) $2');
+        if (valor.length <= 10) return valor.replace(/(\d{2})(\d{4})(\d+)/, '($1) $2-$3');
+        return valor.replace(/(\d{2})(\d{5})(\d+)/, '($1) $2-$3').substring(0, 15);
+    }
+    
+    // ==================== EXPORT E IMPORT ====================
+    function exportDatabase() {
+        const usuarios = getUsuarios();
+        const exportData = {};
+        
+        for (const usuario of usuarios) {
+            exportData[usuario] = {
+                records: getDatabaseRecords(usuario),
+                passwords: getRecordPasswords(usuario)
+            };
+        }
+        
+        const dataStr = JSON.stringify(exportData, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        const data = new Date();
+        const timestamp = `${data.getFullYear()}-${String(data.getMonth()+1).padStart(2,'0')}-${String(data.getDate()).padStart(2,'0')}_${String(data.getHours()).padStart(2,'0')}-${String(data.getMinutes()).padStart(2,'0')}-${String(data.getSeconds()).padStart(2,'0')}`;
+        a.download = `hacker_db_backup_${timestamp}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showMsgTemporary("[OK] BANCO DE DADOS EXPORTADO COM SUCESSO! Arquivo salvo na pasta Downloads", "success");
+    }
+    
+    function importDatabase(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                const usuariosAtuais = getUsuarios();
+                
+                let importCount = 0;
+                let duplicateCount = 0;
+                let userCount = 0;
+                
+                for (const [usuario, data] of Object.entries(importedData)) {
+                    if (data.records && Array.isArray(data.records)) {
+                        if (!usuarioExiste(usuario)) {
+                            addUsuario(usuario);
+                            userCount++;
+                        }
+                        
+                        const recordsExistentes = getDatabaseRecords(usuario);
+                        const novosRecords = [];
+                        
+                        for (const record of data.records) {
+                            const existe = recordsExistentes.some(r => r.nomeCompleto === record.nomeCompleto);
+                            if (!existe) {
+                                novosRecords.push(record);
+                                importCount++;
+                            } else {
+                                duplicateCount++;
+                            }
+                        }
+                        
+                        if (novosRecords.length > 0) {
+                            const allRecords = [...recordsExistentes, ...novosRecords];
+                            saveDatabaseRecords(usuario, allRecords);
+                        }
+                        
+                        if (data.passwords) {
+                            const passwordsExistentes = getRecordPasswords(usuario);
+                            const novasPasswords = { ...passwordsExistentes };
+                            for (const [key, value] of Object.entries(data.passwords)) {
+                                if (!passwordsExistentes[key]) {
+                                    novasPasswords[key] = value;
+                                }
+                            }
+                            saveRecordPasswords(usuario, novasPasswords);
+                        }
+                    }
+                }
+                
+                let msg = `[OK] IMPORTACAO CONCLUIDA! ${importCount} registros importados.`;
+                if (userCount > 0) msg += ` ${userCount} novos usuarios.`;
+                if (duplicateCount > 0) msg += ` ${duplicateCount} registros duplicados ignorados.`;
+                showMsgTemporary(msg, "success");
+                
+                if (loggedUser) {
+                    renderMainApp();
+                }
+            } catch (error) {
+                showMsgTemporary("[ERRO] ARQUIVO INVALIDO OU CORROMPIDO", "error");
+            }
+        };
+        reader.readAsText(file);
+    }
+    
     // ==================== ESTADOS ====================
-    let currentView = "loginRegister";
+    let currentView = "login";
     let loggedUser = null;
-
+    
     const root = document.getElementById("appRoot");
-
+    
     function getAsciiHeader() {
         return `
         <div class="ascii-header">
@@ -489,224 +536,111 @@
   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
         </div>
         <div style="text-align:center; margin-bottom:15px;">
-[ DATABASE v1.0 ] - [ SECURE TERMINAL ]
+[ DATABASE v3.0 ] - [ SISTEMA DE ARQUIVOS ]
         </div>
         `;
     }
-
+    
     function render() {
-        if (currentView === "loginRegister") {
-            renderLoginRegister();
+        if (currentView === "login") {
+            renderLogin();
         } else if (currentView === "mainApp") {
             renderMainApp();
         } else if (currentView === "visualizar") {
             renderVisualizar();
         } else if (currentView === "editar") {
             renderEditar();
-        } else if (currentView === "changePassword") {
-            renderChangePassword();
-        } else if (currentView === "forgotPassword") {
-            renderForgotPassword();
         }
     }
-
-    function renderLoginRegister() {
+    
+    function renderLogin() {
         root.innerHTML = `
             ${getAsciiHeader()}
             <div class="card">
                 <h2>> ACESSO AO SISTEMA</h2>
-                <input type="text" id="loginNome" placeholder="USUARIO">
-                <input type="password" id="loginSenha" placeholder="SENHA">
-                <button id="btnLogin">[ ENTRAR ]</button>
-                <button id="btnForgotPass" class="btn-warning">[ ESQUECI A SENHA ]</button>
+                <input type="text" id="loginNome" placeholder="NOME DE USUARIO" autocomplete="off">
+                <button id="btnEntrar">[ ENTRAR ]</button>
                 <div id="loginMsg" class="error-msg" style="display:none;"></div>
                 <hr>
-                <h3>> CRIAR CONTA</h3>
-                <input type="text" id="regNome" placeholder="USUARIO">
-                <input type="password" id="regSenha" placeholder="SENHA">
-                <button id="btnRegister">[ REGISTRAR ]</button>
-                <div id="regMsg" class="error-msg" style="display:none;"></div>
-                <small>REQUISITOS: 1 MAIUSCULA, 1 NUMERO, 1 CARACTERE ESPECIAL | EX: Admin@123</small>
+                <div class="button-group">
+                    <button id="btnExportLogin" class="btn-warning">[ EXPORTAR BACKUP ]</button>
+                    <button id="btnImportLogin" class="btn-secondary">[ IMPORTAR BACKUP ]</button>
+                </div>
+                <small>DIGITE SEU NOME PARA ENTRAR. SE FOR NOVO, UMA CONTA SERA CRIADA.</small>
+                <small>EXPORTAR: FAZ BACKUP DE TODOS OS DADOS DO SISTEMA (salva na pasta Downloads)</small>
+                <small>IMPORTAR: RESTAURA DADOS (NAO DUPLICA REGISTROS)</small>
             </div>
         `;
         
-        document.getElementById("btnLogin").addEventListener("click", () => {
+        document.getElementById("btnEntrar").addEventListener("click", () => {
             const nome = document.getElementById("loginNome").value.trim();
-            const senha = document.getElementById("loginSenha").value;
             const msgDiv = document.getElementById("loginMsg");
-            if (!nome || !senha) {
-                msgDiv.style.display = "block"; msgDiv.innerText = "[ERRO] PREENCHA TODOS OS CAMPOS";
-                return;
-            }
-            const result = loginAccount(nome, senha);
-            if (result.success) {
-                loggedUser = { nome: result.user.nome };
-                currentView = "mainApp";
-                render();
-            } else {
-                msgDiv.style.display = "block"; msgDiv.innerText = result.message;
-            }
-        });
-        
-        document.getElementById("btnRegister").addEventListener("click", () => {
-            const nome = document.getElementById("regNome").value.trim();
-            const senha = document.getElementById("regSenha").value;
-            const msgDiv = document.getElementById("regMsg");
-            if (!nome || !senha) {
-                msgDiv.style.display = "block"; msgDiv.innerText = "[ERRO] PREENCHA TODOS OS CAMPOS";
-                return;
-            }
-            const result = registerAccount(nome, senha);
-            if (result.success) {
-                msgDiv.classList.add("success-msg");
-                msgDiv.classList.remove("error-msg");
-                msgDiv.style.display = "block"; msgDiv.innerText = result.message;
-                setTimeout(() => { msgDiv.style.display = "none"; }, 2000);
-            } else {
-                msgDiv.classList.add("error-msg");
-                msgDiv.classList.remove("success-msg");
-                msgDiv.style.display = "block"; msgDiv.innerText = result.message;
-            }
-        });
-        
-        document.getElementById("btnForgotPass").addEventListener("click", () => {
-            currentView = "forgotPassword";
-            render();
-        });
-    }
-
-    function renderForgotPassword() {
-        root.innerHTML = `
-            ${getAsciiHeader()}
-            <div>
-                <button id="backToLogin" class="btn-secondary">[ VOLTAR ]</button>
-                <div class="card">
-                    <h2>> RECUPERAR SENHA</h2>
-                    <label>USUARIO:</label>
-                    <input type="text" id="resetUsername" placeholder="NOME DE USUARIO">
-                    <label>NOVA SENHA:</label>
-                    <input type="password" id="resetNewPass" placeholder="NOVA SENHA">
-                    <label>CONFIRMAR SENHA:</label>
-                    <input type="password" id="resetConfirmPass" placeholder="CONFIRMAR SENHA">
-                    <button id="btnResetPass">[ REDEFINIR SENHA ]</button>
-                    <div id="resetMsg" class="error-msg" style="display:none;"></div>
-                    <small>A NOVA SENHA DEVE CONTER: 1 MAIUSCULA, 1 NUMERO, 1 CARACTERE ESPECIAL</small>
-                </div>
-            </div>
-        `;
-        
-        document.getElementById("btnResetPass").addEventListener("click", () => {
-            const username = document.getElementById("resetUsername").value.trim();
-            const newPass = document.getElementById("resetNewPass").value;
-            const confirmPass = document.getElementById("resetConfirmPass").value;
-            const msgDiv = document.getElementById("resetMsg");
             
-            if (!username || !newPass || !confirmPass) {
-                msgDiv.style.display = "block"; msgDiv.innerText = "[ERRO] PREENCHA TODOS OS CAMPOS";
+            if (!nome) {
+                msgDiv.style.display = "block";
+                msgDiv.innerText = "[ERRO] DIGITE UM NOME DE USUARIO";
                 return;
             }
             
-            const result = resetPassword(username, newPass, confirmPass);
-            if (result.success) {
-                msgDiv.classList.add("success-msg");
+            if (!usuarioExiste(nome)) {
+                addUsuario(nome);
                 msgDiv.classList.remove("error-msg");
-                msgDiv.style.display = "block"; msgDiv.innerText = result.message;
+                msgDiv.classList.add("success-msg");
+                msgDiv.style.display = "block";
+                msgDiv.innerText = "[OK] CONTA CRIADA! BEM-VINDO, " + nome.toUpperCase();
                 setTimeout(() => {
-                    currentView = "loginRegister";
-                    render();
-                }, 2000);
-            } else {
-                msgDiv.classList.add("error-msg");
-                msgDiv.classList.remove("success-msg");
-                msgDiv.style.display = "block"; msgDiv.innerText = result.message;
-            }
-        });
-        
-        document.getElementById("backToLogin").addEventListener("click", () => {
-            currentView = "loginRegister";
-            render();
-        });
-    }
-
-    function renderChangePassword() {
-        if (!loggedUser) {
-            currentView = "loginRegister";
-            render();
-            return;
-        }
-        
-        root.innerHTML = `
-            ${getAsciiHeader()}
-            <div>
-                <button id="backToMain" class="btn-secondary">[ VOLTAR ]</button>
-                <div class="card">
-                    <h2>> ALTERAR SENHA</h2>
-                    <label>SENHA ANTIGA:</label>
-                    <input type="password" id="oldPassword" placeholder="SENHA ATUAL">
-                    <label>NOVA SENHA:</label>
-                    <input type="password" id="newPassword" placeholder="NOVA SENHA">
-                    <label>CONFIRMAR NOVA SENHA:</label>
-                    <input type="password" id="confirmPassword" placeholder="CONFIRMAR SENHA">
-                    <button id="btnConfirmChange">[ ALTERAR ]</button>
-                    <div id="changeMsg" class="error-msg" style="display:none;"></div>
-                    <small>REQUISITOS: 1 MAIUSCULA, 1 NUMERO, 1 CARACTERE ESPECIAL</small>
-                </div>
-            </div>
-        `;
-        
-        document.getElementById("btnConfirmChange").addEventListener("click", () => {
-            const oldPassword = document.getElementById("oldPassword").value;
-            const newPassword = document.getElementById("newPassword").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
-            const msgDiv = document.getElementById("changeMsg");
-            
-            if (!oldPassword || !newPassword || !confirmPassword) {
-                msgDiv.style.display = "block"; msgDiv.innerText = "[ERRO] PREENCHA TODOS OS CAMPOS";
-                return;
-            }
-            if (newPassword !== confirmPassword) {
-                msgDiv.style.display = "block"; msgDiv.innerText = "[ERRO] AS SENHAS NAO COINCIDEM";
-                return;
-            }
-            
-            const result = changeAccountPassword(loggedUser.nome, oldPassword, newPassword);
-            if (result.success) {
-                msgDiv.classList.add("success-msg");
-                msgDiv.classList.remove("error-msg");
-                msgDiv.style.display = "block"; msgDiv.innerText = result.message;
-                setTimeout(() => {
+                    loggedUser = { nome: nome };
                     currentView = "mainApp";
                     render();
-                }, 2000);
+                }, 1000);
             } else {
-                msgDiv.classList.add("error-msg");
-                msgDiv.classList.remove("success-msg");
-                msgDiv.style.display = "block"; msgDiv.innerText = result.message;
+                loggedUser = { nome: nome };
+                currentView = "mainApp";
+                render();
             }
         });
         
-        document.getElementById("backToMain").addEventListener("click", () => {
-            currentView = "mainApp";
-            render();
+        document.getElementById("btnExportLogin").addEventListener("click", () => {
+            exportDatabase();
+        });
+        
+        document.getElementById("btnImportLogin").addEventListener("click", () => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = ".json";
+            input.onchange = (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    importDatabase(e.target.files[0]);
+                }
+            };
+            input.click();
         });
     }
-
+    
     function renderMainApp() {
         if (!loggedUser) {
-            currentView = "loginRegister";
+            currentView = "login";
             render();
             return;
         }
+        
         root.innerHTML = `
             ${getAsciiHeader()}
             <div class="user-name">[ ${loggedUser.nome.toUpperCase()} ]</div>
             <div class="card">
-                <button id="btnVisualizar">[ VISUALIZAR REGISTROS ]</button>
-                <button id="btnEditar" class="btn-secondary">[ EDITAR / GERENCIAR ]</button>
-                <button id="btnChangeMyPassword" class="btn-warning">[ ALTERAR SENHA ]</button>
+                <div class="button-group">
+                    <button id="btnVisualizar">[ VISUALIZAR ]</button>
+                    <button id="btnEditar" class="btn-secondary">[ EDITAR ]</button>
+                </div>
+                <div class="button-group" style="margin-top:10px;">
+                    <button id="btnExport" class="btn-warning">[ EXPORTAR BACKUP ]</button>
+                    <button id="btnImport" class="btn-secondary">[ IMPORTAR BACKUP ]</button>
+                </div>
                 <button id="btnLogout" class="btn-danger">[ SAIR ]</button>
             </div>
+            <small style="display:block; text-align:center; margin-top:10px;">* BACKUP salva todos os dados do sistema na pasta Downloads</small>
         `;
+        
         document.getElementById("btnVisualizar").addEventListener("click", () => {
             currentView = "visualizar";
             render();
@@ -715,19 +649,30 @@
             currentView = "editar";
             render();
         });
-        document.getElementById("btnChangeMyPassword").addEventListener("click", () => {
-            currentView = "changePassword";
-            render();
+        document.getElementById("btnExport").addEventListener("click", () => {
+            exportDatabase();
+        });
+        document.getElementById("btnImport").addEventListener("click", () => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = ".json";
+            input.onchange = (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    importDatabase(e.target.files[0]);
+                }
+            };
+            input.click();
         });
         document.getElementById("btnLogout").addEventListener("click", () => {
             loggedUser = null;
-            currentView = "loginRegister";
+            currentView = "login";
             render();
         });
     }
-
+    
     function renderVisualizar() {
-        let records = getDatabaseRecords();
+        if (!loggedUser) return;
+        let records = getDatabaseRecords(loggedUser.nome);
         
         function filterRecords(searchTerm) {
             if (!searchTerm) return records;
@@ -775,15 +720,9 @@
             render();
         });
     }
-
+    
     function renderEditar() {
-        if (!loggedUser) {
-            currentView = "loginRegister";
-            render();
-            return;
-        }
-        
-        const records = getDatabaseRecords();
+        if (!loggedUser) return;
         
         root.innerHTML = `
             ${getAsciiHeader()}
@@ -795,27 +734,34 @@
                     <h3>[ NOVO REGISTRO ]</h3>
                     <input type="text" id="newNome" placeholder="NOME COMPLETO *">
                     <input type="date" id="newDataNasc" placeholder="DATA NASC">
-                    <input type="text" id="newCpf" placeholder="CPF">
-                    <input type="text" id="newCep" placeholder="CEP">
-                    <input type="text" id="newCnpj" placeholder="CNPJ">
+                    <input type="text" id="newCpf" placeholder="CPF" maxlength="14" oninput="this.value = window.formatarCPF(this.value)">
+                    <input type="text" id="newCep" placeholder="CEP" maxlength="9" oninput="this.value = window.formatarCEP(this.value)">
+                    <input type="text" id="newCnpj" placeholder="CNPJ" maxlength="18" oninput="this.value = window.formatarCNPJ(this.value)">
                     <input type="text" id="newRua" placeholder="RUA">
                     <input type="text" id="newNumero" placeholder="NUMERO">
-                    <input type="text" id="newTelefone" placeholder="TELEFONE">
+                    <input type="text" id="newTelefone" placeholder="TELEFONE" maxlength="15" oninput="this.value = window.formatarTelefone(this.value)">
                     <input type="email" id="newGmail" placeholder="GMAIL">
                     <button id="btnAddRecord" class="btn-success">[ SALVAR ]</button>
                     <div id="addMsg" style="display:none;"></div>
                 </div>
                 
                 <div class="card">
-                    <h3>[ PESQUISAR PARA EDITAR ]</h3>
+                    <h3>[ REGISTROS EXISTENTES ]</h3>
                     <div class="search-bar">
-                        <input type="text" id="searchRecordInput" placeholder="NOME DA PESSOA...">
+                        <input type="text" id="searchRecordInput" placeholder="PESQUISAR...">
                         <button id="searchRecordBtn">[ BUSCAR ]</button>
                     </div>
                     <div id="searchResults"></div>
                 </div>
             </div>
         `;
+        
+        window.formatarCPF = formatarCPF;
+        window.formatarCEP = formatarCEP;
+        window.formatarCNPJ = formatarCNPJ;
+        window.formatarTelefone = formatarTelefone;
+        
+        let currentRecords = getDatabaseRecords(loggedUser.nome);
         
         document.getElementById("btnAddRecord").addEventListener("click", () => {
             const nomeCompleto = document.getElementById("newNome").value.trim();
@@ -836,39 +782,42 @@
                 gmail: document.getElementById("newGmail").value
             };
             
-            const result = addDatabaseRecord(newRecord);
+            const result = addDatabaseRecord(loggedUser.nome, newRecord);
             if (result.success) {
                 showMsg("addMsg", result.message, "success");
-                document.querySelectorAll("#newNome, #newDataNasc, #newCpf, #newCep, #newCnpj, #newRua, #newNumero, #newTelefone, #newGmail").forEach(input => {
-                    if(input.id !== "newNome") input.value = "";
+                document.querySelectorAll("#newDataNasc, #newCpf, #newCep, #newCnpj, #newRua, #newNumero, #newTelefone, #newGmail").forEach(input => {
+                    input.value = "";
                 });
                 document.getElementById("newNome").value = "";
+                currentRecords = getDatabaseRecords(loggedUser.nome);
+                searchRecords(currentRecords);
             } else {
                 showMsg("addMsg", result.message, "error");
             }
         });
         
-        function searchRecords() {
-            const searchTerm = document.getElementById("searchRecordInput").value.trim().toLowerCase();
-            if (!searchTerm) {
-                document.getElementById("searchResults").innerHTML = '<div class="error-msg">[ DIGITE UM NOME ]</div>';
-                return;
+        function searchRecords(recordsToSearch) {
+            const searchTerm = document.getElementById("searchRecordInput")?.value.trim().toLowerCase() || "";
+            let filtered = recordsToSearch;
+            if (searchTerm) {
+                filtered = recordsToSearch.filter(r => r.nomeCompleto.toLowerCase().includes(searchTerm));
             }
             
-            const found = records.filter(r => r.nomeCompleto.toLowerCase().includes(searchTerm));
             const resultsDiv = document.getElementById("searchResults");
+            if (!resultsDiv) return;
             
-            if (found.length === 0) {
+            if (filtered.length === 0) {
                 resultsDiv.innerHTML = '<div class="error-msg">[ NENHUM REGISTRO ENCONTRADO ]</div>';
                 return;
             }
             
-            resultsDiv.innerHTML = found.map(rec => `
+            resultsDiv.innerHTML = filtered.map(rec => `
                 <div class="data-row">
                     <strong>> ${escapeHtml(rec.nomeCompleto)}</strong><br>
                     [DATA] ${escapeHtml(rec.dataNascimento || "---")} | [CPF] ${escapeHtml(rec.cpf || "---")}
                     <div class="inline-buttons">
                         <button class="edit-record" data-nome="${escapeHtml(rec.nomeCompleto)}">[ EDITAR ]</button>
+                        <button class="delete-record" data-nome="${escapeHtml(rec.nomeCompleto)}">[ EXCLUIR ]</button>
                     </div>
                 </div>
             `).join("");
@@ -879,13 +828,58 @@
                     promptEditPassword(nome);
                 });
             });
+            
+            document.querySelectorAll(".delete-record").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const nome = btn.getAttribute("data-nome");
+                    promptDeleteRecord(nome);
+                });
+            });
         }
         
-        document.getElementById("searchRecordBtn").addEventListener("click", searchRecords);
+        function promptDeleteRecord(recordName) {
+            const modal = document.createElement("div");
+            modal.className = "modal";
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3>> CONFIRMAR EXCLUSAO</h3>
+                    <p>TEM CERTEZA QUE DESEJA EXCLUIR O REGISTRO:</p>
+                    <p><strong>${escapeHtml(recordName)}</strong>?</p>
+                    <div class="inline-buttons">
+                        <button id="confirmDelete" class="btn-danger">[ EXCLUIR ]</button>
+                        <button id="cancelDelete" class="btn-secondary">[ CANCELAR ]</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            document.getElementById("confirmDelete").addEventListener("click", () => {
+                deleteDatabaseRecord(loggedUser.nome, recordName);
+                modal.remove();
+                currentRecords = getDatabaseRecords(loggedUser.nome);
+                searchRecords(currentRecords);
+                showMsgTemporary("[OK] REGISTRO EXCLUIDO", "success");
+            });
+            
+            document.getElementById("cancelDelete").addEventListener("click", () => {
+                modal.remove();
+            });
+        }
+        
+        function searchRecordsHandler() {
+            searchRecords(currentRecords);
+        }
+        
+        document.getElementById("searchRecordBtn").addEventListener("click", searchRecordsHandler);
+        document.getElementById("searchRecordInput").addEventListener("keyup", (e) => {
+            if (e.key === "Enter") searchRecordsHandler();
+        });
         document.getElementById("backToMain").addEventListener("click", () => {
             currentView = "mainApp";
             render();
         });
+        
+        searchRecords(currentRecords);
     }
     
     function promptEditPassword(recordName) {
@@ -898,7 +892,7 @@
                 ${!hasRecordPassword(loggedUser.nome, recordName) ? 
                     '<p>CRIAR SENHA DE 4 DIGITOS:</p>' : 
                     '<p>DIGITE A SENHA DE 4 DIGITOS:</p>'}
-                <input type="password" id="editPassword" maxlength="4" placeholder="SENHA (4 DIGITOS)">
+                <input type="password" id="editPassword" maxlength="4" placeholder="SENHA (4 DIGITOS)" autocomplete="off" inputmode="numeric">
                 <div class="inline-buttons">
                     <button id="confirmEditPass">[ CONFIRMAR ]</button>
                     <button id="cancelEditPass" class="btn-secondary">[ CANCELAR ]</button>
@@ -939,7 +933,7 @@
     }
     
     function openEditForm(recordName) {
-        const record = getDatabaseRecords().find(r => r.nomeCompleto === recordName);
+        const record = getDatabaseRecords(loggedUser.nome).find(r => r.nomeCompleto === recordName);
         if (!record) return;
         
         const modal = document.createElement("div");
@@ -952,17 +946,17 @@
                 <label>DATA NASC:</label>
                 <input type="date" id="editDataNasc" value="${record.dataNascimento || ''}">
                 <label>CPF:</label>
-                <input type="text" id="editCpf" value="${escapeHtml(record.cpf || '')}">
+                <input type="text" id="editCpf" value="${escapeHtml(record.cpf || '')}" maxlength="14" oninput="this.value = window.formatarCPF(this.value)">
                 <label>CEP:</label>
-                <input type="text" id="editCep" value="${escapeHtml(record.cep || '')}">
+                <input type="text" id="editCep" value="${escapeHtml(record.cep || '')}" maxlength="9" oninput="this.value = window.formatarCEP(this.value)">
                 <label>CNPJ:</label>
-                <input type="text" id="editCnpj" value="${escapeHtml(record.cnpj || '')}">
+                <input type="text" id="editCnpj" value="${escapeHtml(record.cnpj || '')}" maxlength="18" oninput="this.value = window.formatarCNPJ(this.value)">
                 <label>RUA:</label>
                 <input type="text" id="editRua" value="${escapeHtml(record.rua || '')}">
                 <label>NUMERO:</label>
                 <input type="text" id="editNumero" value="${escapeHtml(record.numeroCasa || '')}">
                 <label>TELEFONE:</label>
-                <input type="text" id="editTelefone" value="${escapeHtml(record.telefone || '')}">
+                <input type="text" id="editTelefone" value="${escapeHtml(record.telefone || '')}" maxlength="15" oninput="this.value = window.formatarTelefone(this.value)">
                 <label>GMAIL:</label>
                 <input type="email" id="editGmail" value="${escapeHtml(record.gmail || '')}">
                 <div class="inline-buttons">
@@ -973,6 +967,11 @@
             </div>
         `;
         document.body.appendChild(modal);
+        
+        window.formatarCPF = formatarCPF;
+        window.formatarCEP = formatarCEP;
+        window.formatarCNPJ = formatarCNPJ;
+        window.formatarTelefone = formatarTelefone;
         
         document.getElementById("saveEditBtn").addEventListener("click", () => {
             const newNome = document.getElementById("editNome").value.trim();
@@ -993,7 +992,7 @@
                 gmail: document.getElementById("editGmail").value
             };
             
-            updateDatabaseRecord(recordName, updatedData);
+            updateDatabaseRecord(loggedUser.nome, recordName, updatedData);
             showMsgInModal("editMsg", "[OK] DADOS ATUALIZADOS", "success");
             setTimeout(() => modal.remove(), 1500);
         });
@@ -1005,10 +1004,29 @@
     
     function showMsg(elementId, message, type) {
         const el = document.getElementById(elementId);
+        if (!el) return;
         el.style.display = "block";
         el.className = type === "success" ? "success-msg" : "error-msg";
         el.innerText = message;
         setTimeout(() => { el.style.display = "none"; }, 2000);
+    }
+    
+    function showMsgTemporary(message, type) {
+        const msgDiv = document.createElement("div");
+        msgDiv.className = type === "success" ? "success-msg" : "error-msg";
+        msgDiv.innerText = message;
+        msgDiv.style.position = "fixed";
+        msgDiv.style.bottom = "20px";
+        msgDiv.style.left = "50%";
+        msgDiv.style.transform = "translateX(-50%)";
+        msgDiv.style.zIndex = "1001";
+        msgDiv.style.backgroundColor = "#000";
+        msgDiv.style.border = "1px solid #00ff00";
+        msgDiv.style.padding = "10px 20px";
+        msgDiv.style.borderRadius = "4px";
+        msgDiv.style.whiteSpace = "nowrap";
+        document.body.appendChild(msgDiv);
+        setTimeout(() => msgDiv.remove(), 4000);
     }
     
     function showMsgInModal(elementId, message, type) {
