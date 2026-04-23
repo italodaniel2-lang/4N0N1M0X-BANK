@@ -214,6 +214,12 @@
             max-width: 500px;
             width: 90%;
         }
+        
+        .senha-input {
+            letter-spacing: 2px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -232,6 +238,19 @@
     function saveDB(data) {
         localStorage.setItem("meu_banco", JSON.stringify(data));
     }
+    
+    function getSenha() {
+        let senha = localStorage.getItem("senha_editar");
+        return senha;
+    }
+    
+    function setSenha(senha) {
+        localStorage.setItem("senha_editar", senha);
+    }
+    
+    function temSenhaCadastrada() {
+        return getSenha() !== null;
+    }
 
     function adicionarRegistro(registro) {
         let db = getDB();
@@ -240,6 +259,23 @@
         db.push(registro);
         saveDB(db);
         return true;
+    }
+    
+    function adicionarOuAtualizarPorCPF(registro) {
+        let db = getDB();
+        let index = db.findIndex(r => r.cpf && r.cpf === registro.cpf && registro.cpf);
+        
+        if (index !== -1) {
+            db[index] = { ...db[index], ...registro };
+            saveDB(db);
+            return { status: "atualizado", nome: db[index].nomeCompleto };
+        } else {
+            let existeNome = db.some(r => r.nomeCompleto.toLowerCase() === registro.nomeCompleto.toLowerCase());
+            if (existeNome) return { status: "duplicado_nome", nome: registro.nomeCompleto };
+            db.push(registro);
+            saveDB(db);
+            return { status: "adicionado", nome: registro.nomeCompleto };
+        }
     }
 
     function atualizarRegistro(nomeAntigo, novosDados) {
@@ -261,6 +297,101 @@
             return true;
         }
         return false;
+    }
+
+    // ==================== FORMATACAO AUTOMATICA ====================
+    function formatarCPF(valor) {
+        let v = valor.replace(/\D/g, '');
+        if (v.length <= 3) return v;
+        if (v.length <= 6) return v.replace(/(\d{3})(\d+)/, '$1.$2');
+        if (v.length <= 9) return v.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+        return v.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, '$1.$2.$3-$4').substring(0, 14);
+    }
+    
+    function formatarCNPJ(valor) {
+        let v = valor.replace(/\D/g, '');
+        if (v.length <= 2) return v;
+        if (v.length <= 5) return v.replace(/(\d{2})(\d+)/, '$1.$2');
+        if (v.length <= 8) return v.replace(/(\d{2})(\d{3})(\d+)/, '$1.$2.$3');
+        if (v.length <= 12) return v.replace(/(\d{2})(\d{3})(\d{3})(\d+)/, '$1.$2.$3/$4');
+        return v.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d+)/, '$1.$2.$3/$4-$5').substring(0, 18);
+    }
+    
+    function formatarCEP(valor) {
+        let v = valor.replace(/\D/g, '');
+        if (v.length <= 5) return v;
+        return v.replace(/(\d{5})(\d+)/, '$1-$2').substring(0, 9);
+    }
+    
+    function formatarTelefone(valor) {
+        let v = valor.replace(/\D/g, '');
+        if (v.length <= 2) return v;
+        if (v.length <= 7) return v.replace(/(\d{2})(\d+)/, '($1) $2');
+        if (v.length <= 11) return v.replace(/(\d{2})(\d{4,5})(\d+)/, '($1) $2-$3');
+        return v.replace(/(\d{2})(\d{5})(\d+)/, '($1) $2-$3').substring(0, 15);
+    }
+    
+    function aplicarMascarasEmInputs() {
+        const cpfInputs = document.querySelectorAll('input[placeholder*="CPF"], input[id*="Cpf"], input[id*="cpf"]');
+        const cnpjInputs = document.querySelectorAll('input[placeholder*="CNPJ"], input[id*="Cnpj"], input[id*="cnpj"]');
+        const cepInputs = document.querySelectorAll('input[placeholder*="CEP"], input[id*="Cep"], input[id*="cep"]');
+        const telInputs = document.querySelectorAll('input[placeholder*="TELEFONE"], input[id*="Telefone"], input[id*="telefone"], input[placeholder*="TEL"]');
+        
+        cpfInputs.forEach(input => {
+            if (!input.hasAttribute('data-mask')) {
+                input.setAttribute('data-mask', 'cpf');
+                input.addEventListener('input', function(e) {
+                    let pos = this.selectionStart;
+                    let raw = this.value.replace(/\D/g, '');
+                    let formatted = formatarCPF(raw);
+                    this.value = formatted;
+                    let newPos = pos + (formatted.length - raw.length);
+                    this.setSelectionRange(newPos, newPos);
+                });
+            }
+        });
+        
+        cnpjInputs.forEach(input => {
+            if (!input.hasAttribute('data-mask')) {
+                input.setAttribute('data-mask', 'cnpj');
+                input.addEventListener('input', function(e) {
+                    let pos = this.selectionStart;
+                    let raw = this.value.replace(/\D/g, '');
+                    let formatted = formatarCNPJ(raw);
+                    this.value = formatted;
+                    let newPos = pos + (formatted.length - raw.length);
+                    this.setSelectionRange(newPos, newPos);
+                });
+            }
+        });
+        
+        cepInputs.forEach(input => {
+            if (!input.hasAttribute('data-mask')) {
+                input.setAttribute('data-mask', 'cep');
+                input.addEventListener('input', function(e) {
+                    let pos = this.selectionStart;
+                    let raw = this.value.replace(/\D/g, '');
+                    let formatted = formatarCEP(raw);
+                    this.value = formatted;
+                    let newPos = pos + (formatted.length - raw.length);
+                    this.setSelectionRange(newPos, newPos);
+                });
+            }
+        });
+        
+        telInputs.forEach(input => {
+            if (!input.hasAttribute('data-mask')) {
+                input.setAttribute('data-mask', 'tel');
+                input.addEventListener('input', function(e) {
+                    let pos = this.selectionStart;
+                    let raw = this.value.replace(/\D/g, '');
+                    let formatted = formatarTelefone(raw);
+                    this.value = formatted;
+                    let newPos = pos + (formatted.length - raw.length);
+                    this.setSelectionRange(newPos, newPos);
+                });
+            }
+        });
     }
 
     // ==================== EXPORTAR JSON ====================
@@ -308,15 +439,17 @@
                     }
                 }
 
-                let importados = 0;
-                let duplicados = 0;
+                let adicionados = 0;
+                let atualizados = 0;
+                let duplicadosNome = 0;
 
                 for (let reg of registros) {
                     if (reg.nomeCompleto) {
+                        let limparCPF = (reg.cpf || "").replace(/\D/g, '');
                         let novoReg = {
                             nomeCompleto: reg.nomeCompleto,
                             dataNascimento: reg.dataNascimento || "",
-                            cpf: reg.cpf || "",
+                            cpf: limparCPF ? formatarCPF(limparCPF) : "",
                             cep: reg.cep || "",
                             cnpj: reg.cnpj || "",
                             rua: reg.rua || "",
@@ -324,15 +457,19 @@
                             telefone: reg.telefone || "",
                             gmail: reg.gmail || reg.email || ""
                         };
-                        if (adicionarRegistro(novoReg)) {
-                            importados++;
-                        } else {
-                            duplicados++;
+                        
+                        let resultado = adicionarOuAtualizarPorCPF(novoReg);
+                        if (resultado.status === "adicionado") {
+                            adicionados++;
+                        } else if (resultado.status === "atualizado") {
+                            atualizados++;
+                        } else if (resultado.status === "duplicado_nome") {
+                            duplicadosNome++;
                         }
                     }
                 }
 
-                mostrarMsg("IMPORTADO: " + importados + " | DUPLICADOS: " + duplicados, "success");
+                mostrarMsg("ADICIONADOS: " + adicionados + " | ATUALIZADOS POR CPF: " + atualizados + " | DUPLICADOS (NOME): " + duplicadosNome, "success");
                 if (currentView === "visualizar") renderVisualizar();
                 if (currentView === "editar") renderEditar();
                 
@@ -341,6 +478,100 @@
             }
         };
         reader.readAsText(file);
+    }
+    
+    // ==================== VERIFICAR SENHA ====================
+    function verificarSenhaOuCriar(callback) {
+        if (temSenhaCadastrada()) {
+            let modal = document.createElement("div");
+            modal.className = "modal";
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3>> ACESSO RESTRITO</h3>
+                    <p>DIGITE A SENHA DE 4 DIGITOS PARA ACESSAR O EDITOR</p>
+                    <input type="password" id="senhaAcesso" class="senha-input" maxlength="4" placeholder="****" autocomplete="off">
+                    <div class="inline-buttons" style="margin-top:15px;">
+                        <button id="confirmarSenha">[ CONFIRMAR ]</button>
+                        <button id="cancelarSenha" class="btn-secondary">[ CANCELAR ]</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            let inputSenha = document.getElementById("senhaAcesso");
+            inputSenha.focus();
+            
+            document.getElementById("confirmarSenha").onclick = () => {
+                let senha = inputSenha.value;
+                if (senha === getSenha()) {
+                    modal.remove();
+                    callback(true);
+                } else {
+                    mostrarMsg("SENHA INCORRETA! ACESSO NEGADO.", "error");
+                    modal.remove();
+                    callback(false);
+                }
+            };
+            
+            document.getElementById("cancelarSenha").onclick = () => {
+                modal.remove();
+                callback(false);
+            };
+            
+            inputSenha.onkeypress = (e) => {
+                if (e.key === "Enter") {
+                    let senha = inputSenha.value;
+                    if (senha === getSenha()) {
+                        modal.remove();
+                        callback(true);
+                    } else {
+                        mostrarMsg("SENHA INCORRETA!", "error");
+                        modal.remove();
+                        callback(false);
+                    }
+                }
+            };
+        } else {
+            let modal = document.createElement("div");
+            modal.className = "modal";
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3>> CRIAR SENHA</h3>
+                    <p>PRIMEIRO ACESSO! CRIE UMA SENHA DE 4 DIGITOS:</p>
+                    <input type="password" id="novaSenha" class="senha-input" maxlength="4" placeholder="****" autocomplete="off">
+                    <input type="password" id="confirmarNovaSenha" class="senha-input" maxlength="4" placeholder="CONFIRMAR SENHA" autocomplete="off" style="margin-top:10px;">
+                    <div class="inline-buttons" style="margin-top:15px;">
+                        <button id="salvarSenha">[ CRIAR SENHA ]</button>
+                        <button id="cancelarSenha" class="btn-secondary">[ CANCELAR ]</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            document.getElementById("salvarSenha").onclick = () => {
+                let novaSenha = document.getElementById("novaSenha").value;
+                let confirmar = document.getElementById("confirmarNovaSenha").value;
+                
+                if (novaSenha.length !== 4) {
+                    mostrarMsg("A SENHA DEVE TER EXATAMENTE 4 DIGITOS!", "error");
+                    return;
+                }
+                if (novaSenha !== confirmar) {
+                    mostrarMsg("AS SENHAS NAO COINCIDEM!", "error");
+                    return;
+                }
+                
+                setSenha(novaSenha);
+                modal.remove();
+                mostrarMsg("SENHA CRIADA COM SUCESSO! ACESSO PERMITIDO.", "success");
+                callback(true);
+            };
+            
+            document.getElementById("cancelarSenha").onclick = () => {
+                modal.remove();
+                callback(false);
+            };
+        }
     }
 
     // ==================== TELAS ====================
@@ -382,6 +613,7 @@
     }
 
     function renderMain() {
+        let senhaStatus = temSenhaCadastrada() ? "SENHA CONFIGURADA" : "SENHA NAO CONFIGURADA";
         root.innerHTML = `
             <div class="ascii-header">
   ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██████╗ 
@@ -404,10 +636,18 @@
                 <small>BANCO DE DADOS: ${getDB().length} REGISTROS</small>
                 <small>IMPORTE UM JSON E OS DADOS VAO PARA O BANCO</small>
                 <small>EXPORTE PARA FAZER BACKUP DOS SEUS DADOS</small>
+                <small>STATUS SENHA EDITOR: ${senhaStatus}</small>
             </div>
         `;
         document.getElementById("btnVisualizar").onclick = () => { currentView = "visualizar"; render(); };
-        document.getElementById("btnEditar").onclick = () => { currentView = "editar"; render(); };
+        document.getElementById("btnEditar").onclick = () => {
+            verificarSenhaOuCriar((acessoPermitido) => {
+                if (acessoPermitido) {
+                    currentView = "editar";
+                    render();
+                }
+            });
+        };
         document.getElementById("btnImportar").onclick = () => { currentView = "importar"; render(); };
         document.getElementById("btnExportar").onclick = () => { exportarJSON(); };
     }
@@ -513,16 +753,23 @@
             `;
             document.body.appendChild(modal);
             
+            aplicarMascarasEmInputs();
+            
             document.getElementById("salvarEdit").onclick = () => {
+                let cpfRaw = document.getElementById("editCpf").value.replace(/\D/g, '');
+                let telefoneRaw = document.getElementById("editTelefone").value.replace(/\D/g, '');
+                let cepRaw = document.getElementById("editCep").value.replace(/\D/g, '');
+                let cnpjRaw = document.getElementById("editCnpj").value.replace(/\D/g, '');
+                
                 let novos = {
                     nomeCompleto: document.getElementById("editNome").value,
                     dataNascimento: document.getElementById("editDataNasc").value,
-                    cpf: document.getElementById("editCpf").value,
-                    cep: document.getElementById("editCep").value,
-                    cnpj: document.getElementById("editCnpj").value,
+                    cpf: cpfRaw ? formatarCPF(cpfRaw) : "",
+                    cep: cepRaw ? formatarCEP(cepRaw) : "",
+                    cnpj: cnpjRaw ? formatarCNPJ(cnpjRaw) : "",
                     rua: document.getElementById("editRua").value,
                     numeroCasa: document.getElementById("editNumero").value,
-                    telefone: document.getElementById("editTelefone").value,
+                    telefone: telefoneRaw ? formatarTelefone(telefoneRaw) : "",
                     gmail: document.getElementById("editGmail").value
                 };
                 atualizarRegistro(nome, novos);
@@ -565,6 +812,7 @@
             </div>
         `;
         
+        aplicarMascarasEmInputs();
         carregarLista();
         
         document.getElementById("adicionarBtn").onclick = () => {
@@ -573,15 +821,21 @@
                 document.getElementById("addMsg").innerHTML = '<div class="msg msg-error">NOME OBRIGATORIO</div>';
                 return;
             }
+            
+            let cpfRaw = document.getElementById("novoCpf").value.replace(/\D/g, '');
+            let telefoneRaw = document.getElementById("novoTelefone").value.replace(/\D/g, '');
+            let cepRaw = document.getElementById("novoCep").value.replace(/\D/g, '');
+            let cnpjRaw = document.getElementById("novoCnpj").value.replace(/\D/g, '');
+            
             let novo = {
                 nomeCompleto: nome,
                 dataNascimento: document.getElementById("novoDataNasc").value,
-                cpf: document.getElementById("novoCpf").value,
-                cep: document.getElementById("novoCep").value,
-                cnpj: document.getElementById("novoCnpj").value,
+                cpf: cpfRaw ? formatarCPF(cpfRaw) : "",
+                cep: cepRaw ? formatarCEP(cepRaw) : "",
+                cnpj: cnpjRaw ? formatarCNPJ(cnpjRaw) : "",
                 rua: document.getElementById("novoRua").value,
                 numeroCasa: document.getElementById("novoNumero").value,
-                telefone: document.getElementById("novoTelefone").value,
+                telefone: telefoneRaw ? formatarTelefone(telefoneRaw) : "",
                 gmail: document.getElementById("novoGmail").value
             };
             if (adicionarRegistro(novo)) {
@@ -620,7 +874,7 @@
                         <input type="file" id="fileInput" accept=".json" style="display:none;">
                     </div>
                     <small>OS DADOS IMPORTADOS VAO DIRETO PARA O BANCO DE DADOS</small>
-                    <small>APARECERAO EM VISUALIZAR DB E EDITAR DB</small>
+                    <small>* SE O CPF JA EXISTIR, O REGISTRO SERA ATUALIZADO</small>
                     <div id="importMsg"></div>
                 </div>
             </div>
