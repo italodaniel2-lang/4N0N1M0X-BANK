@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>HACKER DATABASE v3.0 - COM EXPORT/IMPORT</title>
+    <title>HACKER DATABASE - IMPORTAR/EXPORTAR JSON</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
         
@@ -21,8 +21,6 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            position: relative;
-            overflow-x: auto;
         }
 
         body, body * {
@@ -49,37 +47,29 @@
 
         .app-container {
             width: 100%;
-            max-width: 750px;
+            max-width: 900px;
             background: #000000;
             border: 2px solid #00ff00;
             border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.05);
-            overflow: hidden;
-            padding: 20px 24px 28px;
-            position: relative;
+            padding: 20px;
         }
 
         .ascii-header {
             text-align: center;
             margin-bottom: 20px;
             font-size: 9px;
-            line-height: 1.2;
             white-space: pre;
             font-family: monospace;
-            text-shadow: 0 0 5px #00ff00;
         }
         
         .user-name {
             text-align: center;
             margin: 10px 0 20px 0;
-            padding: 10px 0;
+            padding: 10px;
             border-top: 1px solid #00ff00;
             border-bottom: 1px solid #00ff00;
             font-size: 1.4rem;
             font-weight: bold;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 0 8px #00ff00;
         }
 
         h2 {
@@ -89,18 +79,12 @@
             padding-left: 12px;
         }
 
-        h3 {
-            font-size: 1rem;
-            margin: 15px 0 8px 0;
-        }
-
         .card {
             background: #000000;
             border: 1px solid #00ff00;
             border-radius: 6px;
             padding: 18px;
             margin-bottom: 18px;
-            box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.1), 0 2px 5px rgba(0,0,0,0.5);
         }
 
         .button-group {
@@ -115,84 +99,34 @@
 
         input, button {
             width: 100%;
-            padding: 12px 14px;
+            padding: 12px;
             margin-top: 10px;
-            border: none;
+            border: 1px solid #00ff00;
             border-radius: 4px;
             font-size: 0.9rem;
             font-family: 'Share Tech Mono', monospace;
             background: #000000;
+            cursor: pointer;
         }
 
         input {
-            border: 1px solid #00ff00;
-        }
-        input:focus {
-            border-color: #00ff00;
-            background: #000000;
-            box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
-            outline: none;
-        }
-        input::placeholder {
-            color: #006600 !important;
+            cursor: text;
         }
 
-        button {
-            border: 1px solid #00ff00;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
         button:hover {
             background: #00ff00;
             color: #000000 !important;
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
-            transform: translateY(-1px);
-        }
-        button:hover * {
-            color: #000000 !important;
         }
 
-        .btn-secondary {
-            border-color: #006600;
-        }
-        .btn-secondary:hover {
-            background: #006600;
-        }
-        .btn-danger {
-            border-color: #ff0000;
-        }
-        .btn-danger:hover {
-            background: #ff0000;
-        }
-        .btn-success {
-            border-color: #00ff00;
-        }
-        .btn-success:hover {
-            background: #00ff00;
-        }
-        .btn-warning {
-            border-color: #ffff00;
-        }
-        .btn-warning:hover {
-            background: #ffff00;
-        }
-
-        .error-msg, .success-msg {
-            background: #000000;
-            border: 1px solid #00ff00;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            margin-top: 10px;
-            text-align: center;
-        }
+        .btn-secondary { border-color: #006600; }
+        .btn-danger { border-color: #ff0000; }
+        .btn-success { border-color: #00ff00; }
+        .btn-warning { border-color: #ffff00; }
 
         .search-bar {
             display: flex;
             gap: 10px;
-            align-items: center;
             margin-bottom: 15px;
         }
         .search-bar input {
@@ -201,7 +135,6 @@
         }
         .search-bar button {
             width: auto;
-            padding: 10px 18px;
             margin-top: 0;
         }
 
@@ -209,43 +142,50 @@
             background: #000000;
             border: 1px solid #00ff00;
             border-radius: 4px;
-            padding: 10px 12px;
+            padding: 10px;
             margin-bottom: 8px;
             border-left: 3px solid #00ff00;
-            transition: all 0.2s;
-        }
-        .data-row:hover {
-            background: #0a0a0a;
-            transform: translateX(4px);
-            box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
-        }
-        .data-row strong {
-            font-weight: bold;
         }
 
         .inline-buttons {
             display: flex;
             gap: 10px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
         .inline-buttons button {
-            flex: 1;
             margin-top: 0;
-            padding: 8px 12px;
+            padding: 6px;
             font-size: 0.8rem;
         }
 
-        hr {
-            margin: 15px 0;
-            border-color: #00ff00;
+        .file-area {
+            border: 2px dashed #00ff00;
+            border-radius: 6px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .file-area:hover {
+            background: rgba(0, 255, 0, 0.05);
         }
 
-        label {
-            display: block;
-            margin-top: 10px;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #00ff00;
+            margin-bottom: 15px;
         }
+
+        .msg {
+            padding: 8px;
+            margin-top: 10px;
+            text-align: center;
+            border: 1px solid #00ff00;
+        }
+        .msg-error { border-color: #ff0000; color: #ff0000 !important; }
+        .msg-success { border-color: #00ff00; }
 
         small {
             font-size: 0.65rem;
@@ -273,13 +213,6 @@
             padding: 20px;
             max-width: 500px;
             width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        ::selection {
-            background: #00ff00;
-            color: #000000 !important;
         }
     </style>
 </head>
@@ -287,757 +220,446 @@
 <div class="app-container" id="appRoot"></div>
 
 <script>
-    // ==================== BANCO DE DADOS POR USUARIO ====================
-    function initDB() {
-        if (!localStorage.getItem("db_usuarios")) {
-            localStorage.setItem("db_usuarios", JSON.stringify([]));
-        }
+    // ==================== BANCO DE DADOS ====================
+    let loggedUser = null;
+    let currentView = "login";
+
+    function getDB() {
+        let db = localStorage.getItem("meu_banco");
+        return db ? JSON.parse(db) : [];
     }
-    
-    function getUsuarios() {
-        return JSON.parse(localStorage.getItem("db_usuarios"));
+
+    function saveDB(data) {
+        localStorage.setItem("meu_banco", JSON.stringify(data));
     }
-    
-    function addUsuario(nome) {
-        let usuarios = getUsuarios();
-        if (usuarios.includes(nome)) return false;
-        usuarios.push(nome);
-        localStorage.setItem("db_usuarios", JSON.stringify(usuarios));
-        
-        if (!localStorage.getItem(`db_records_${nome}`)) {
-            localStorage.setItem(`db_records_${nome}`, JSON.stringify([]));
-        }
-        if (!localStorage.getItem(`db_passwords_${nome}`)) {
-            localStorage.setItem(`db_passwords_${nome}`, JSON.stringify({}));
-        }
+
+    function adicionarRegistro(registro) {
+        let db = getDB();
+        let existe = db.some(r => r.nomeCompleto.toLowerCase() === registro.nomeCompleto.toLowerCase());
+        if (existe) return false;
+        db.push(registro);
+        saveDB(db);
         return true;
     }
-    
-    function usuarioExiste(nome) {
-        return getUsuarios().includes(nome);
-    }
-    
-    function getDatabaseRecords(usuario) {
-        return JSON.parse(localStorage.getItem(`db_records_${usuario}`) || "[]");
-    }
-    
-    function saveDatabaseRecords(usuario, records) {
-        localStorage.setItem(`db_records_${usuario}`, JSON.stringify(records));
-    }
-    
-    function getRecordPasswords(usuario) {
-        return JSON.parse(localStorage.getItem(`db_passwords_${usuario}`) || "{}");
-    }
-    
-    function saveRecordPasswords(usuario, passwords) {
-        localStorage.setItem(`db_passwords_${usuario}`, JSON.stringify(passwords));
-    }
-    
-    function setRecordPassword(usuario, recordName, password) {
-        const passwords = getRecordPasswords(usuario);
-        passwords[recordName] = password;
-        saveRecordPasswords(usuario, passwords);
-    }
-    
-    function verifyRecordPassword(usuario, recordName, password) {
-        const passwords = getRecordPasswords(usuario);
-        return passwords[recordName] === password;
-    }
-    
-    function hasRecordPassword(usuario, recordName) {
-        const passwords = getRecordPasswords(usuario);
-        return !!passwords[recordName];
-    }
-    
-    function addDatabaseRecord(usuario, record) {
-        let records = getDatabaseRecords(usuario);
-        if (records.find(r => r.nomeCompleto.toLowerCase() === record.nomeCompleto.toLowerCase())) {
-            return { success: false, message: "[ERRO] REGISTRO JA EXISTE" };
-        }
-        records.push(record);
-        saveDatabaseRecords(usuario, records);
-        return { success: true, message: "[OK] REGISTRO ADICIONADO" };
-    }
-    
-    function updateDatabaseRecord(usuario, nomeOriginal, novosDados) {
-        let records = getDatabaseRecords(usuario);
-        const index = records.findIndex(r => r.nomeCompleto === nomeOriginal);
+
+    function atualizarRegistro(nomeAntigo, novosDados) {
+        let db = getDB();
+        let index = db.findIndex(r => r.nomeCompleto === nomeAntigo);
         if (index !== -1) {
-            const oldName = records[index].nomeCompleto;
-            const newName = novosDados.nomeCompleto;
-            
-            if (oldName !== newName) {
-                const passwords = getRecordPasswords(usuario);
-                if (passwords[oldName]) {
-                    passwords[newName] = passwords[oldName];
-                    delete passwords[oldName];
-                    saveRecordPasswords(usuario, passwords);
-                }
-            }
-            records[index] = { ...records[index], ...novosDados };
-            saveDatabaseRecords(usuario, records);
+            db[index] = { ...db[index], ...novosDados };
+            saveDB(db);
             return true;
         }
         return false;
     }
-    
-    function deleteDatabaseRecord(usuario, recordName) {
-        let records = getDatabaseRecords(usuario);
-        const newRecords = records.filter(r => r.nomeCompleto !== recordName);
-        if (newRecords.length === records.length) return false;
-        saveDatabaseRecords(usuario, newRecords);
-        
-        const passwords = getRecordPasswords(usuario);
-        if (passwords[recordName]) {
-            delete passwords[recordName];
-            saveRecordPasswords(usuario, passwords);
+
+    function deletarRegistro(nome) {
+        let db = getDB();
+        let novoDB = db.filter(r => r.nomeCompleto !== nome);
+        if (novoDB.length !== db.length) {
+            saveDB(novoDB);
+            return true;
         }
-        return true;
+        return false;
     }
-    
-    // ==================== FUNCOES DE FORMATACAO ====================
-    function formatarCPF(valor) {
-        valor = valor.replace(/\D/g, '');
-        if (valor.length <= 3) return valor;
-        if (valor.length <= 6) return valor.replace(/(\d{3})(\d+)/, '$1.$2');
-        if (valor.length <= 9) return valor.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
-        return valor.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, '$1.$2.$3-$4').substring(0, 14);
-    }
-    
-    function formatarCNPJ(valor) {
-        valor = valor.replace(/\D/g, '');
-        if (valor.length <= 2) return valor;
-        if (valor.length <= 5) return valor.replace(/(\d{2})(\d+)/, '$1.$2');
-        if (valor.length <= 8) return valor.replace(/(\d{2})(\d{3})(\d+)/, '$1.$2.$3');
-        if (valor.length <= 12) return valor.replace(/(\d{2})(\d{3})(\d{3})(\d+)/, '$1.$2.$3/$4');
-        return valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d+)/, '$1.$2.$3/$4-$5').substring(0, 18);
-    }
-    
-    function formatarCEP(valor) {
-        valor = valor.replace(/\D/g, '');
-        if (valor.length <= 5) return valor;
-        return valor.replace(/(\d{5})(\d+)/, '$1-$2').substring(0, 9);
-    }
-    
-    function formatarTelefone(valor) {
-        valor = valor.replace(/\D/g, '');
-        if (valor.length <= 2) return valor;
-        if (valor.length <= 6) return valor.replace(/(\d{2})(\d+)/, '($1) $2');
-        if (valor.length <= 10) return valor.replace(/(\d{2})(\d{4})(\d+)/, '($1) $2-$3');
-        return valor.replace(/(\d{2})(\d{5})(\d+)/, '($1) $2-$3').substring(0, 15);
-    }
-    
-    // ==================== EXPORT E IMPORT ====================
-    function exportDatabase() {
-        const usuarios = getUsuarios();
-        const exportData = {};
+
+    // ==================== EXPORTAR JSON ====================
+    function exportarJSON() {
+        let db = getDB();
+        let exportData = {};
+        exportData[loggedUser] = {
+            records: db
+        };
         
-        for (const usuario of usuarios) {
-            exportData[usuario] = {
-                records: getDatabaseRecords(usuario),
-                passwords: getRecordPasswords(usuario)
-            };
-        }
-        
-        const dataStr = JSON.stringify(exportData, null, 2);
-        const blob = new Blob([dataStr], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
+        let dataStr = JSON.stringify(exportData, null, 2);
+        let blob = new Blob([dataStr], { type: "application/json" });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement("a");
         a.href = url;
-        const data = new Date();
-        const timestamp = `${data.getFullYear()}-${String(data.getMonth()+1).padStart(2,'0')}-${String(data.getDate()).padStart(2,'0')}_${String(data.getHours()).padStart(2,'0')}-${String(data.getMinutes()).padStart(2,'0')}-${String(data.getSeconds()).padStart(2,'0')}`;
-        a.download = `hacker_db_backup_${timestamp}.json`;
+        a.download = `hacker_db_${loggedUser}_${new Date().toISOString().slice(0,19)}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
         
-        showMsgTemporary("[OK] BANCO DE DADOS EXPORTADO COM SUCESSO! Arquivo salvo na pasta Downloads", "success");
+        mostrarMsg("BANCO DE DADOS EXPORTADO COM SUCESSO", "success");
     }
-    
-    function importDatabase(file) {
-        const reader = new FileReader();
+
+    // ==================== IMPORTAR JSON ====================
+    function importarJSON(file) {
+        let reader = new FileReader();
         reader.onload = function(e) {
             try {
-                const importedData = JSON.parse(e.target.result);
-                const usuariosAtuais = getUsuarios();
+                let json = JSON.parse(e.target.result);
+                let registros = [];
                 
-                let importCount = 0;
-                let duplicateCount = 0;
-                let userCount = 0;
-                
-                for (const [usuario, data] of Object.entries(importedData)) {
-                    if (data.records && Array.isArray(data.records)) {
-                        if (!usuarioExiste(usuario)) {
-                            addUsuario(usuario);
-                            userCount++;
-                        }
-                        
-                        const recordsExistentes = getDatabaseRecords(usuario);
-                        const novosRecords = [];
-                        
-                        for (const record of data.records) {
-                            const existe = recordsExistentes.some(r => r.nomeCompleto === record.nomeCompleto);
-                            if (!existe) {
-                                novosRecords.push(record);
-                                importCount++;
-                            } else {
-                                duplicateCount++;
-                            }
-                        }
-                        
-                        if (novosRecords.length > 0) {
-                            const allRecords = [...recordsExistentes, ...novosRecords];
-                            saveDatabaseRecords(usuario, allRecords);
-                        }
-                        
-                        if (data.passwords) {
-                            const passwordsExistentes = getRecordPasswords(usuario);
-                            const novasPasswords = { ...passwordsExistentes };
-                            for (const [key, value] of Object.entries(data.passwords)) {
-                                if (!passwordsExistentes[key]) {
-                                    novasPasswords[key] = value;
-                                }
-                            }
-                            saveRecordPasswords(usuario, novasPasswords);
+                if (Array.isArray(json)) {
+                    registros = json;
+                } else if (json.records && Array.isArray(json.records)) {
+                    registros = json.records;
+                } else {
+                    for (let key in json) {
+                        if (json[key] && Array.isArray(json[key].records)) {
+                            registros = json[key].records;
+                            break;
+                        } else if (json[key] && json[key].nomeCompleto) {
+                            registros.push(json[key]);
                         }
                     }
                 }
-                
-                let msg = `[OK] IMPORTACAO CONCLUIDA! ${importCount} registros importados.`;
-                if (userCount > 0) msg += ` ${userCount} novos usuarios.`;
-                if (duplicateCount > 0) msg += ` ${duplicateCount} registros duplicados ignorados.`;
-                showMsgTemporary(msg, "success");
-                
-                if (loggedUser) {
-                    renderMainApp();
+
+                let importados = 0;
+                let duplicados = 0;
+
+                for (let reg of registros) {
+                    if (reg.nomeCompleto) {
+                        let novoReg = {
+                            nomeCompleto: reg.nomeCompleto,
+                            dataNascimento: reg.dataNascimento || "",
+                            cpf: reg.cpf || "",
+                            cep: reg.cep || "",
+                            cnpj: reg.cnpj || "",
+                            rua: reg.rua || "",
+                            numeroCasa: reg.numeroCasa || "",
+                            telefone: reg.telefone || "",
+                            gmail: reg.gmail || reg.email || ""
+                        };
+                        if (adicionarRegistro(novoReg)) {
+                            importados++;
+                        } else {
+                            duplicados++;
+                        }
+                    }
                 }
-            } catch (error) {
-                showMsgTemporary("[ERRO] ARQUIVO INVALIDO OU CORROMPIDO", "error");
+
+                mostrarMsg("IMPORTADO: " + importados + " | DUPLICADOS: " + duplicados, "success");
+                if (currentView === "visualizar") renderVisualizar();
+                if (currentView === "editar") renderEditar();
+                
+            } catch (erro) {
+                mostrarMsg("ERRO AO LER JSON: " + erro.message, "error");
             }
         };
         reader.readAsText(file);
     }
-    
-    // ==================== ESTADOS ====================
-    let currentView = "login";
-    let loggedUser = null;
-    
+
+    // ==================== TELAS ====================
     const root = document.getElementById("appRoot");
-    
-    function getAsciiHeader() {
-        return `
-        <div class="ascii-header">
+
+    function render() {
+        if (currentView === "login") renderLogin();
+        else if (currentView === "main") renderMain();
+        else if (currentView === "visualizar") renderVisualizar();
+        else if (currentView === "editar") renderEditar();
+        else if (currentView === "importar") renderImportar();
+    }
+
+    function renderLogin() {
+        root.innerHTML = `
+            <div class="ascii-header">
   ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██████╗ 
   ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗
   ███████║███████║██║     █████╔╝ █████╗  ██████╔╝
   ██╔══██║██╔══██║██║     ██╔═██╗ ██╔══╝  ██╔══██╗
   ██║  ██║██║  ██║╚██████╗██║  ██╗███████╗██║  ██║
   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
-        </div>
-        <div style="text-align:center; margin-bottom:15px;">
-[ DATABASE v3.0 ] - [ SISTEMA DE ARQUIVOS ]
-        </div>
-        `;
-    }
-    
-    function render() {
-        if (currentView === "login") {
-            renderLogin();
-        } else if (currentView === "mainApp") {
-            renderMainApp();
-        } else if (currentView === "visualizar") {
-            renderVisualizar();
-        } else if (currentView === "editar") {
-            renderEditar();
-        }
-    }
-    
-    function renderLogin() {
-        root.innerHTML = `
-            ${getAsciiHeader()}
+            </div>
             <div class="card">
-                <h2>> ACESSO AO SISTEMA</h2>
-                <input type="text" id="loginNome" placeholder="NOME DE USUARIO" autocomplete="off">
-                <button id="btnEntrar">[ ENTRAR ]</button>
-                <div id="loginMsg" class="error-msg" style="display:none;"></div>
-                <hr>
-                <div class="button-group">
-                    <button id="btnExportLogin" class="btn-warning">[ EXPORTAR BACKUP ]</button>
-                    <button id="btnImportLogin" class="btn-secondary">[ IMPORTAR BACKUP ]</button>
-                </div>
-                <small>DIGITE SEU NOME PARA ENTRAR. SE FOR NOVO, UMA CONTA SERA CRIADA.</small>
-                <small>EXPORTAR: FAZ BACKUP DE TODOS OS DADOS DO SISTEMA (salva na pasta Downloads)</small>
-                <small>IMPORTAR: RESTAURA DADOS (NAO DUPLICA REGISTROS)</small>
+                <h2>> ACESSO</h2>
+                <input type="text" id="nomeUser" placeholder="NOME DE USUARIO">
+                <button id="entrarBtn">[ ENTRAR ]</button>
+                <small>DIGITE SEU NOME PARA COMEÇAR</small>
             </div>
         `;
-        
-        document.getElementById("btnEntrar").addEventListener("click", () => {
-            const nome = document.getElementById("loginNome").value.trim();
-            const msgDiv = document.getElementById("loginMsg");
-            
-            if (!nome) {
-                msgDiv.style.display = "block";
-                msgDiv.innerText = "[ERRO] DIGITE UM NOME DE USUARIO";
-                return;
-            }
-            
-            if (!usuarioExiste(nome)) {
-                addUsuario(nome);
-                msgDiv.classList.remove("error-msg");
-                msgDiv.classList.add("success-msg");
-                msgDiv.style.display = "block";
-                msgDiv.innerText = "[OK] CONTA CRIADA! BEM-VINDO, " + nome.toUpperCase();
-                setTimeout(() => {
-                    loggedUser = { nome: nome };
-                    currentView = "mainApp";
-                    render();
-                }, 1000);
-            } else {
-                loggedUser = { nome: nome };
-                currentView = "mainApp";
+        document.getElementById("entrarBtn").onclick = () => {
+            let nome = document.getElementById("nomeUser").value.trim();
+            if (nome) {
+                loggedUser = nome;
+                currentView = "main";
                 render();
             }
-        });
-        
-        document.getElementById("btnExportLogin").addEventListener("click", () => {
-            exportDatabase();
-        });
-        
-        document.getElementById("btnImportLogin").addEventListener("click", () => {
-            const input = document.createElement("input");
-            input.type = "file";
-            input.accept = ".json";
-            input.onchange = (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    importDatabase(e.target.files[0]);
-                }
-            };
-            input.click();
-        });
+        };
     }
-    
-    function renderMainApp() {
-        if (!loggedUser) {
-            currentView = "login";
-            render();
-            return;
-        }
-        
+
+    function renderMain() {
         root.innerHTML = `
-            ${getAsciiHeader()}
-            <div class="user-name">[ ${loggedUser.nome.toUpperCase()} ]</div>
+            <div class="ascii-header">
+  ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██████╗ 
+  ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗
+  ███████║███████║██║     █████╔╝ █████╗  ██████╔╝
+  ██╔══██║██╔══██║██║     ██╔═██╗ ██╔══╝  ██╔══██╗
+  ██║  ██║██║  ██║╚██████╗██║  ██╗███████╗██║  ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+            </div>
+            <div class="user-name">[ ${loggedUser.toUpperCase()} ]</div>
             <div class="card">
                 <div class="button-group">
-                    <button id="btnVisualizar">[ VISUALIZAR ]</button>
-                    <button id="btnEditar" class="btn-secondary">[ EDITAR ]</button>
+                    <button id="btnVisualizar">[ VISUALIZAR DB ]</button>
+                    <button id="btnEditar">[ EDITAR DB ]</button>
+                    <button id="btnImportar">[ IMPORTAR JSON ]</button>
+                    <button id="btnExportar" class="btn-warning">[ EXPORTAR JSON ]</button>
                 </div>
-                <div class="button-group" style="margin-top:10px;">
-                    <button id="btnExport" class="btn-warning">[ EXPORTAR BACKUP ]</button>
-                    <button id="btnImport" class="btn-secondary">[ IMPORTAR BACKUP ]</button>
-                </div>
-                <button id="btnLogout" class="btn-danger">[ SAIR ]</button>
             </div>
-            <small style="display:block; text-align:center; margin-top:10px;">* BACKUP salva todos os dados do sistema na pasta Downloads</small>
+            <div class="card">
+                <small>BANCO DE DADOS: ${getDB().length} REGISTROS</small>
+                <small>IMPORTE UM JSON E OS DADOS VAO PARA O BANCO</small>
+                <small>EXPORTE PARA FAZER BACKUP DOS SEUS DADOS</small>
+            </div>
         `;
-        
-        document.getElementById("btnVisualizar").addEventListener("click", () => {
-            currentView = "visualizar";
-            render();
-        });
-        document.getElementById("btnEditar").addEventListener("click", () => {
-            currentView = "editar";
-            render();
-        });
-        document.getElementById("btnExport").addEventListener("click", () => {
-            exportDatabase();
-        });
-        document.getElementById("btnImport").addEventListener("click", () => {
-            const input = document.createElement("input");
-            input.type = "file";
-            input.accept = ".json";
-            input.onchange = (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    importDatabase(e.target.files[0]);
-                }
-            };
-            input.click();
-        });
-        document.getElementById("btnLogout").addEventListener("click", () => {
-            loggedUser = null;
-            currentView = "login";
-            render();
-        });
+        document.getElementById("btnVisualizar").onclick = () => { currentView = "visualizar"; render(); };
+        document.getElementById("btnEditar").onclick = () => { currentView = "editar"; render(); };
+        document.getElementById("btnImportar").onclick = () => { currentView = "importar"; render(); };
+        document.getElementById("btnExportar").onclick = () => { exportarJSON(); };
     }
-    
+
     function renderVisualizar() {
-        if (!loggedUser) return;
-        let records = getDatabaseRecords(loggedUser.nome);
+        let db = getDB();
         
-        function filterRecords(searchTerm) {
-            if (!searchTerm) return records;
-            return records.filter(r => r.nomeCompleto.toLowerCase().includes(searchTerm.toLowerCase()));
-        }
-        
-        function refreshList(searchTerm = "") {
-            const filtered = filterRecords(searchTerm);
-            const container = document.getElementById("recordsList");
-            if (!container) return;
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="error-msg">[ NENHUM REGISTRO ENCONTRADO ]</div>`;
+        function buscar() {
+            let termo = document.getElementById("searchInput").value.toLowerCase();
+            let filtrados = termo ? db.filter(r => r.nomeCompleto.toLowerCase().includes(termo)) : db;
+            let container = document.getElementById("lista");
+            if (filtrados.length === 0) {
+                container.innerHTML = '<div class="msg">[ NENHUM REGISTRO ]</div>';
                 return;
             }
-            container.innerHTML = filtered.map(rec => `
+            container.innerHTML = filtrados.map(r => `
                 <div class="data-row">
-                    <strong>> ${escapeHtml(rec.nomeCompleto)}</strong><br>
-                    [DATA] ${escapeHtml(rec.dataNascimento || "---")} | [CPF] ${escapeHtml(rec.cpf || "---")}<br>
-                    [TEL] ${escapeHtml(rec.telefone || "---")} | [EMAIL] ${escapeHtml(rec.gmail || "---")}<br>
-                    [END] ${escapeHtml(rec.rua || "---")}, ${escapeHtml(rec.numeroCasa || "---")}<br>
-                    [CEP] ${escapeHtml(rec.cep || "---")} | [CNPJ] ${escapeHtml(rec.cnpj || "---")}
+                    <strong>> ${escapeHtml(r.nomeCompleto)}</strong><br>
+                    DATA: ${escapeHtml(r.dataNascimento || "---")} | CPF: ${escapeHtml(r.cpf || "---")}<br>
+                    TEL: ${escapeHtml(r.telefone || "---")} | EMAIL: ${escapeHtml(r.gmail || "---")}<br>
+                    END: ${escapeHtml(r.rua || "---")}, ${escapeHtml(r.numeroCasa || "---")}<br>
+                    CEP: ${escapeHtml(r.cep || "---")} | CNPJ: ${escapeHtml(r.cnpj || "---")}
                 </div>
             `).join("");
         }
-        
+
         root.innerHTML = `
-            ${getAsciiHeader()}
             <div>
-                <button id="backMain" class="btn-secondary">[ VOLTAR ]</button>
-                <h2>> REGISTROS DO BANCO</h2>
+                <button id="voltarBtn" class="btn-secondary">[ VOLTAR ]</button>
+                <h2>> VISUALIZAR DB (${db.length} registros)</h2>
                 <div class="search-bar">
-                    <input type="text" id="searchInput" placeholder="PESQUISAR POR NOME...">
-                    <button id="searchBtn">[ BUSCAR ]</button>
+                    <input type="text" id="searchInput" placeholder="PESQUISAR POR NOME">
+                    <button id="buscarBtn">[ BUSCAR ]</button>
                 </div>
-                <div id="recordsList"></div>
+                <div id="lista"></div>
             </div>
         `;
-        
-        refreshList("");
-        document.getElementById("searchBtn").addEventListener("click", () => {
-            refreshList(document.getElementById("searchInput").value);
-        });
-        document.getElementById("backMain").addEventListener("click", () => {
-            currentView = "mainApp";
-            render();
-        });
+        buscar();
+        document.getElementById("buscarBtn").onclick = buscar;
+        document.getElementById("voltarBtn").onclick = () => { currentView = "main"; render(); };
     }
-    
+
     function renderEditar() {
-        if (!loggedUser) return;
+        let db = getDB();
         
-        root.innerHTML = `
-            ${getAsciiHeader()}
-            <div>
-                <button id="backToMain" class="btn-secondary">[ VOLTAR ]</button>
-                <h2>> GERENCIAR REGISTROS</h2>
-                
-                <div class="card">
-                    <h3>[ NOVO REGISTRO ]</h3>
-                    <input type="text" id="newNome" placeholder="NOME COMPLETO *">
-                    <input type="date" id="newDataNasc" placeholder="DATA NASC">
-                    <input type="text" id="newCpf" placeholder="CPF" maxlength="14" oninput="this.value = window.formatarCPF(this.value)">
-                    <input type="text" id="newCep" placeholder="CEP" maxlength="9" oninput="this.value = window.formatarCEP(this.value)">
-                    <input type="text" id="newCnpj" placeholder="CNPJ" maxlength="18" oninput="this.value = window.formatarCNPJ(this.value)">
-                    <input type="text" id="newRua" placeholder="RUA">
-                    <input type="text" id="newNumero" placeholder="NUMERO">
-                    <input type="text" id="newTelefone" placeholder="TELEFONE" maxlength="15" oninput="this.value = window.formatarTelefone(this.value)">
-                    <input type="email" id="newGmail" placeholder="GMAIL">
-                    <button id="btnAddRecord" class="btn-success">[ SALVAR ]</button>
-                    <div id="addMsg" style="display:none;"></div>
-                </div>
-                
-                <div class="card">
-                    <h3>[ REGISTROS EXISTENTES ]</h3>
-                    <div class="search-bar">
-                        <input type="text" id="searchRecordInput" placeholder="PESQUISAR...">
-                        <button id="searchRecordBtn">[ BUSCAR ]</button>
-                    </div>
-                    <div id="searchResults"></div>
-                </div>
-            </div>
-        `;
-        
-        window.formatarCPF = formatarCPF;
-        window.formatarCEP = formatarCEP;
-        window.formatarCNPJ = formatarCNPJ;
-        window.formatarTelefone = formatarTelefone;
-        
-        let currentRecords = getDatabaseRecords(loggedUser.nome);
-        
-        document.getElementById("btnAddRecord").addEventListener("click", () => {
-            const nomeCompleto = document.getElementById("newNome").value.trim();
-            if (!nomeCompleto) {
-                showMsg("addMsg", "[ERRO] NOME OBRIGATORIO", "error");
+        function carregarLista() {
+            let termo = document.getElementById("searchEdit").value.toLowerCase();
+            let filtrados = termo ? db.filter(r => r.nomeCompleto.toLowerCase().includes(termo)) : db;
+            let container = document.getElementById("listaEdit");
+            if (filtrados.length === 0) {
+                container.innerHTML = '<div class="msg">[ NENHUM REGISTRO ]</div>';
                 return;
             }
-            
-            const newRecord = {
-                nomeCompleto: nomeCompleto,
-                dataNascimento: document.getElementById("newDataNasc").value,
-                cpf: document.getElementById("newCpf").value,
-                cep: document.getElementById("newCep").value,
-                cnpj: document.getElementById("newCnpj").value,
-                rua: document.getElementById("newRua").value,
-                numeroCasa: document.getElementById("newNumero").value,
-                telefone: document.getElementById("newTelefone").value,
-                gmail: document.getElementById("newGmail").value
-            };
-            
-            const result = addDatabaseRecord(loggedUser.nome, newRecord);
-            if (result.success) {
-                showMsg("addMsg", result.message, "success");
-                document.querySelectorAll("#newDataNasc, #newCpf, #newCep, #newCnpj, #newRua, #newNumero, #newTelefone, #newGmail").forEach(input => {
-                    input.value = "";
-                });
-                document.getElementById("newNome").value = "";
-                currentRecords = getDatabaseRecords(loggedUser.nome);
-                searchRecords(currentRecords);
-            } else {
-                showMsg("addMsg", result.message, "error");
-            }
-        });
-        
-        function searchRecords(recordsToSearch) {
-            const searchTerm = document.getElementById("searchRecordInput")?.value.trim().toLowerCase() || "";
-            let filtered = recordsToSearch;
-            if (searchTerm) {
-                filtered = recordsToSearch.filter(r => r.nomeCompleto.toLowerCase().includes(searchTerm));
-            }
-            
-            const resultsDiv = document.getElementById("searchResults");
-            if (!resultsDiv) return;
-            
-            if (filtered.length === 0) {
-                resultsDiv.innerHTML = '<div class="error-msg">[ NENHUM REGISTRO ENCONTRADO ]</div>';
-                return;
-            }
-            
-            resultsDiv.innerHTML = filtered.map(rec => `
+            container.innerHTML = filtrados.map(r => `
                 <div class="data-row">
-                    <strong>> ${escapeHtml(rec.nomeCompleto)}</strong><br>
-                    [DATA] ${escapeHtml(rec.dataNascimento || "---")} | [CPF] ${escapeHtml(rec.cpf || "---")}
+                    <strong>> ${escapeHtml(r.nomeCompleto)}</strong><br>
+                    DATA: ${escapeHtml(r.dataNascimento || "---")} | CPF: ${escapeHtml(r.cpf || "---")}
                     <div class="inline-buttons">
-                        <button class="edit-record" data-nome="${escapeHtml(rec.nomeCompleto)}">[ EDITAR ]</button>
-                        <button class="delete-record" data-nome="${escapeHtml(rec.nomeCompleto)}">[ EXCLUIR ]</button>
+                        <button class="editarBtn" data-nome="${escapeHtml(r.nomeCompleto)}">[ EDITAR ]</button>
+                        <button class="excluirBtn" data-nome="${escapeHtml(r.nomeCompleto)}">[ EXCLUIR ]</button>
                     </div>
                 </div>
             `).join("");
             
-            document.querySelectorAll(".edit-record").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    const nome = btn.getAttribute("data-nome");
-                    promptEditPassword(nome);
-                });
+            document.querySelectorAll(".editarBtn").forEach(btn => {
+                btn.onclick = () => abrirEdicao(btn.getAttribute("data-nome"));
             });
-            
-            document.querySelectorAll(".delete-record").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    const nome = btn.getAttribute("data-nome");
-                    promptDeleteRecord(nome);
-                });
+            document.querySelectorAll(".excluirBtn").forEach(btn => {
+                btn.onclick = () => excluirRegistro(btn.getAttribute("data-nome"));
             });
         }
-        
-        function promptDeleteRecord(recordName) {
-            const modal = document.createElement("div");
+
+        function excluirRegistro(nome) {
+            if (confirm(`EXCLUIR "${nome}"?`)) {
+                deletarRegistro(nome);
+                db = getDB();
+                carregarLista();
+                mostrarMsg("REGISTRO EXCLUIDO", "success");
+            }
+        }
+
+        function abrirEdicao(nome) {
+            let registro = db.find(r => r.nomeCompleto === nome);
+            let modal = document.createElement("div");
             modal.className = "modal";
             modal.innerHTML = `
                 <div class="modal-content">
-                    <h3>> CONFIRMAR EXCLUSAO</h3>
-                    <p>TEM CERTEZA QUE DESEJA EXCLUIR O REGISTRO:</p>
-                    <p><strong>${escapeHtml(recordName)}</strong>?</p>
+                    <h3>EDITAR: ${escapeHtml(nome)}</h3>
+                    <input type="text" id="editNome" value="${escapeHtml(registro.nomeCompleto)}" placeholder="NOME">
+                    <input type="date" id="editDataNasc" value="${registro.dataNascimento || ''}">
+                    <input type="text" id="editCpf" value="${escapeHtml(registro.cpf || '')}" placeholder="CPF">
+                    <input type="text" id="editCep" value="${escapeHtml(registro.cep || '')}" placeholder="CEP">
+                    <input type="text" id="editCnpj" value="${escapeHtml(registro.cnpj || '')}" placeholder="CNPJ">
+                    <input type="text" id="editRua" value="${escapeHtml(registro.rua || '')}" placeholder="RUA">
+                    <input type="text" id="editNumero" value="${escapeHtml(registro.numeroCasa || '')}" placeholder="NUMERO">
+                    <input type="text" id="editTelefone" value="${escapeHtml(registro.telefone || '')}" placeholder="TELEFONE">
+                    <input type="email" id="editGmail" value="${escapeHtml(registro.gmail || '')}" placeholder="EMAIL">
                     <div class="inline-buttons">
-                        <button id="confirmDelete" class="btn-danger">[ EXCLUIR ]</button>
-                        <button id="cancelDelete" class="btn-secondary">[ CANCELAR ]</button>
+                        <button id="salvarEdit">[ SALVAR ]</button>
+                        <button id="cancelarEdit" class="btn-secondary">[ CANCELAR ]</button>
                     </div>
                 </div>
             `;
             document.body.appendChild(modal);
             
-            document.getElementById("confirmDelete").addEventListener("click", () => {
-                deleteDatabaseRecord(loggedUser.nome, recordName);
+            document.getElementById("salvarEdit").onclick = () => {
+                let novos = {
+                    nomeCompleto: document.getElementById("editNome").value,
+                    dataNascimento: document.getElementById("editDataNasc").value,
+                    cpf: document.getElementById("editCpf").value,
+                    cep: document.getElementById("editCep").value,
+                    cnpj: document.getElementById("editCnpj").value,
+                    rua: document.getElementById("editRua").value,
+                    numeroCasa: document.getElementById("editNumero").value,
+                    telefone: document.getElementById("editTelefone").value,
+                    gmail: document.getElementById("editGmail").value
+                };
+                atualizarRegistro(nome, novos);
                 modal.remove();
-                currentRecords = getDatabaseRecords(loggedUser.nome);
-                searchRecords(currentRecords);
-                showMsgTemporary("[OK] REGISTRO EXCLUIDO", "success");
-            });
-            
-            document.getElementById("cancelDelete").addEventListener("click", () => {
-                modal.remove();
-            });
-        }
-        
-        function searchRecordsHandler() {
-            searchRecords(currentRecords);
-        }
-        
-        document.getElementById("searchRecordBtn").addEventListener("click", searchRecordsHandler);
-        document.getElementById("searchRecordInput").addEventListener("keyup", (e) => {
-            if (e.key === "Enter") searchRecordsHandler();
-        });
-        document.getElementById("backToMain").addEventListener("click", () => {
-            currentView = "mainApp";
-            render();
-        });
-        
-        searchRecords(currentRecords);
-    }
-    
-    function promptEditPassword(recordName) {
-        const modal = document.createElement("div");
-        modal.className = "modal";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3>> AUTORIZACAO NECESSARIA</h3>
-                <p>REGISTRO: <strong>${escapeHtml(recordName)}</strong></p>
-                ${!hasRecordPassword(loggedUser.nome, recordName) ? 
-                    '<p>CRIAR SENHA DE 4 DIGITOS:</p>' : 
-                    '<p>DIGITE A SENHA DE 4 DIGITOS:</p>'}
-                <input type="password" id="editPassword" maxlength="4" placeholder="SENHA (4 DIGITOS)" autocomplete="off" inputmode="numeric">
-                <div class="inline-buttons">
-                    <button id="confirmEditPass">[ CONFIRMAR ]</button>
-                    <button id="cancelEditPass" class="btn-secondary">[ CANCELAR ]</button>
-                </div>
-                <div id="passMsg" class="error-msg" style="display:none;"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        
-        document.getElementById("confirmEditPass").addEventListener("click", () => {
-            const password = document.getElementById("editPassword").value;
-            const msgDiv = document.getElementById("passMsg");
-            
-            if (!/^\d{4}$/.test(password)) {
-                msgDiv.style.display = "block";
-                msgDiv.innerText = "[ERRO] SENHA DEVE TER 4 DIGITOS NUMERICOS";
-                return;
-            }
-            
-            if (!hasRecordPassword(loggedUser.nome, recordName)) {
-                setRecordPassword(loggedUser.nome, recordName, password);
-                modal.remove();
-                openEditForm(recordName);
-            } else {
-                if (verifyRecordPassword(loggedUser.nome, recordName, password)) {
-                    modal.remove();
-                    openEditForm(recordName);
-                } else {
-                    msgDiv.style.display = "block";
-                    msgDiv.innerText = "[ERRO] SENHA INCORRETA";
-                }
-            }
-        });
-        
-        document.getElementById("cancelEditPass").addEventListener("click", () => {
-            modal.remove();
-        });
-    }
-    
-    function openEditForm(recordName) {
-        const record = getDatabaseRecords(loggedUser.nome).find(r => r.nomeCompleto === recordName);
-        if (!record) return;
-        
-        const modal = document.createElement("div");
-        modal.className = "modal";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3>> EDITANDO: ${escapeHtml(recordName)}</h3>
-                <label>NOME COMPLETO:</label>
-                <input type="text" id="editNome" value="${escapeHtml(record.nomeCompleto)}">
-                <label>DATA NASC:</label>
-                <input type="date" id="editDataNasc" value="${record.dataNascimento || ''}">
-                <label>CPF:</label>
-                <input type="text" id="editCpf" value="${escapeHtml(record.cpf || '')}" maxlength="14" oninput="this.value = window.formatarCPF(this.value)">
-                <label>CEP:</label>
-                <input type="text" id="editCep" value="${escapeHtml(record.cep || '')}" maxlength="9" oninput="this.value = window.formatarCEP(this.value)">
-                <label>CNPJ:</label>
-                <input type="text" id="editCnpj" value="${escapeHtml(record.cnpj || '')}" maxlength="18" oninput="this.value = window.formatarCNPJ(this.value)">
-                <label>RUA:</label>
-                <input type="text" id="editRua" value="${escapeHtml(record.rua || '')}">
-                <label>NUMERO:</label>
-                <input type="text" id="editNumero" value="${escapeHtml(record.numeroCasa || '')}">
-                <label>TELEFONE:</label>
-                <input type="text" id="editTelefone" value="${escapeHtml(record.telefone || '')}" maxlength="15" oninput="this.value = window.formatarTelefone(this.value)">
-                <label>GMAIL:</label>
-                <input type="email" id="editGmail" value="${escapeHtml(record.gmail || '')}">
-                <div class="inline-buttons">
-                    <button id="saveEditBtn" class="btn-success">[ SALVAR ]</button>
-                    <button id="closeEditBtn" class="btn-secondary">[ FECHAR ]</button>
-                </div>
-                <div id="editMsg" style="display:none;"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        
-        window.formatarCPF = formatarCPF;
-        window.formatarCEP = formatarCEP;
-        window.formatarCNPJ = formatarCNPJ;
-        window.formatarTelefone = formatarTelefone;
-        
-        document.getElementById("saveEditBtn").addEventListener("click", () => {
-            const newNome = document.getElementById("editNome").value.trim();
-            if (!newNome) {
-                showMsgInModal("editMsg", "[ERRO] NOME OBRIGATORIO", "error");
-                return;
-            }
-            
-            const updatedData = {
-                nomeCompleto: newNome,
-                dataNascimento: document.getElementById("editDataNasc").value,
-                cpf: document.getElementById("editCpf").value,
-                cep: document.getElementById("editCep").value,
-                cnpj: document.getElementById("editCnpj").value,
-                rua: document.getElementById("editRua").value,
-                numeroCasa: document.getElementById("editNumero").value,
-                telefone: document.getElementById("editTelefone").value,
-                gmail: document.getElementById("editGmail").value
+                db = getDB();
+                carregarLista();
+                mostrarMsg("REGISTRO ATUALIZADO", "success");
             };
-            
-            updateDatabaseRecord(loggedUser.nome, recordName, updatedData);
-            showMsgInModal("editMsg", "[OK] DADOS ATUALIZADOS", "success");
-            setTimeout(() => modal.remove(), 1500);
-        });
+            document.getElementById("cancelarEdit").onclick = () => modal.remove();
+        }
+
+        root.innerHTML = `
+            <div>
+                <button id="voltarBtn" class="btn-secondary">[ VOLTAR ]</button>
+                <h2>> EDITAR DB (${db.length} registros)</h2>
+                
+                <div class="card">
+                    <h3>[ ADICIONAR NOVO ]</h3>
+                    <input type="text" id="novoNome" placeholder="NOME COMPLETO">
+                    <input type="date" id="novoDataNasc">
+                    <input type="text" id="novoCpf" placeholder="CPF">
+                    <input type="text" id="novoCep" placeholder="CEP">
+                    <input type="text" id="novoCnpj" placeholder="CNPJ">
+                    <input type="text" id="novoRua" placeholder="RUA">
+                    <input type="text" id="novoNumero" placeholder="NUMERO">
+                    <input type="text" id="novoTelefone" placeholder="TELEFONE">
+                    <input type="email" id="novoGmail" placeholder="EMAIL">
+                    <button id="adicionarBtn" class="btn-success">[ ADICIONAR ]</button>
+                    <div id="addMsg"></div>
+                </div>
+                
+                <div class="card">
+                    <h3>[ REGISTROS EXISTENTES ]</h3>
+                    <div class="search-bar">
+                        <input type="text" id="searchEdit" placeholder="PESQUISAR...">
+                        <button id="buscarEdit">[ BUSCAR ]</button>
+                    </div>
+                    <div id="listaEdit"></div>
+                </div>
+            </div>
+        `;
         
-        document.getElementById("closeEditBtn").addEventListener("click", () => {
-            modal.remove();
-        });
+        carregarLista();
+        
+        document.getElementById("adicionarBtn").onclick = () => {
+            let nome = document.getElementById("novoNome").value.trim();
+            if (!nome) {
+                document.getElementById("addMsg").innerHTML = '<div class="msg msg-error">NOME OBRIGATORIO</div>';
+                return;
+            }
+            let novo = {
+                nomeCompleto: nome,
+                dataNascimento: document.getElementById("novoDataNasc").value,
+                cpf: document.getElementById("novoCpf").value,
+                cep: document.getElementById("novoCep").value,
+                cnpj: document.getElementById("novoCnpj").value,
+                rua: document.getElementById("novoRua").value,
+                numeroCasa: document.getElementById("novoNumero").value,
+                telefone: document.getElementById("novoTelefone").value,
+                gmail: document.getElementById("novoGmail").value
+            };
+            if (adicionarRegistro(novo)) {
+                document.getElementById("addMsg").innerHTML = '<div class="msg msg-success">ADICIONADO!</div>';
+                document.getElementById("novoNome").value = "";
+                document.getElementById("novoDataNasc").value = "";
+                document.getElementById("novoCpf").value = "";
+                document.getElementById("novoCep").value = "";
+                document.getElementById("novoCnpj").value = "";
+                document.getElementById("novoRua").value = "";
+                document.getElementById("novoNumero").value = "";
+                document.getElementById("novoTelefone").value = "";
+                document.getElementById("novoGmail").value = "";
+                db = getDB();
+                carregarLista();
+                setTimeout(() => { document.getElementById("addMsg").innerHTML = ""; }, 2000);
+            } else {
+                document.getElementById("addMsg").innerHTML = '<div class="msg msg-error">REGISTRO JA EXISTE</div>';
+                setTimeout(() => { document.getElementById("addMsg").innerHTML = ""; }, 2000);
+            }
+        };
+        
+        document.getElementById("buscarEdit").onclick = () => carregarLista();
+        document.getElementById("searchEdit").onkeyup = (e) => { if(e.key === "Enter") carregarLista(); };
+        document.getElementById("voltarBtn").onclick = () => { currentView = "main"; render(); };
     }
-    
-    function showMsg(elementId, message, type) {
-        const el = document.getElementById(elementId);
-        if (!el) return;
-        el.style.display = "block";
-        el.className = type === "success" ? "success-msg" : "error-msg";
-        el.innerText = message;
-        setTimeout(() => { el.style.display = "none"; }, 2000);
+
+    function renderImportar() {
+        root.innerHTML = `
+            <div>
+                <button id="voltarBtn" class="btn-secondary">[ VOLTAR ]</button>
+                <h2>> IMPORTAR JSON</h2>
+                <div class="card">
+                    <div class="file-area" id="dropZone">
+                        CLIQUE OU ARRASTE UM ARQUIVO JSON
+                        <input type="file" id="fileInput" accept=".json" style="display:none;">
+                    </div>
+                    <small>OS DADOS IMPORTADOS VAO DIRETO PARA O BANCO DE DADOS</small>
+                    <small>APARECERAO EM VISUALIZAR DB E EDITAR DB</small>
+                    <div id="importMsg"></div>
+                </div>
+            </div>
+        `;
+        
+        let dropZone = document.getElementById("dropZone");
+        let fileInput = document.getElementById("fileInput");
+        
+        dropZone.onclick = () => fileInput.click();
+        dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.background = "rgba(0,255,0,0.1)"; };
+        dropZone.ondragleave = () => { dropZone.style.background = "transparent"; };
+        dropZone.ondrop = (e) => {
+            e.preventDefault();
+            dropZone.style.background = "transparent";
+            let file = e.dataTransfer.files[0];
+            if (file) importarJSON(file);
+        };
+        
+        fileInput.onchange = (e) => {
+            if (e.target.files[0]) importarJSON(e.target.files[0]);
+        };
+        
+        document.getElementById("voltarBtn").onclick = () => { currentView = "main"; render(); };
     }
-    
-    function showMsgTemporary(message, type) {
-        const msgDiv = document.createElement("div");
-        msgDiv.className = type === "success" ? "success-msg" : "error-msg";
-        msgDiv.innerText = message;
-        msgDiv.style.position = "fixed";
-        msgDiv.style.bottom = "20px";
-        msgDiv.style.left = "50%";
-        msgDiv.style.transform = "translateX(-50%)";
-        msgDiv.style.zIndex = "1001";
-        msgDiv.style.backgroundColor = "#000";
-        msgDiv.style.border = "1px solid #00ff00";
-        msgDiv.style.padding = "10px 20px";
-        msgDiv.style.borderRadius = "4px";
-        msgDiv.style.whiteSpace = "nowrap";
-        document.body.appendChild(msgDiv);
-        setTimeout(() => msgDiv.remove(), 4000);
+
+    function mostrarMsg(msg, tipo) {
+        let div = document.createElement("div");
+        div.className = `msg msg-${tipo}`;
+        div.innerText = msg;
+        div.style.position = "fixed";
+        div.style.bottom = "20px";
+        div.style.left = "50%";
+        div.style.transform = "translateX(-50%)";
+        div.style.zIndex = "1000";
+        div.style.background = "#000";
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 3000);
     }
-    
-    function showMsgInModal(elementId, message, type) {
-        const el = document.getElementById(elementId);
-        if (!el) return;
-        el.style.display = "block";
-        el.className = type === "success" ? "success-msg" : "error-msg";
-        el.innerText = message;
-        setTimeout(() => { el.style.display = "none"; }, 2000);
-    }
-    
+
     function escapeHtml(str) {
         if (!str) return "";
         return str.replace(/[&<>]/g, function(m) {
@@ -1047,8 +669,7 @@
             return m;
         });
     }
-    
-    initDB();
+
     render();
 </script>
 </body>
